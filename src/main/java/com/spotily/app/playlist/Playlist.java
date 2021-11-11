@@ -7,11 +7,13 @@ import java.util.Objects;
 
 public class Playlist {
     private int id;
+    private int userId;
     private List<Song> songs;
 
-    public Playlist(int id, List<Song> songs) {
+    public Playlist(int id, List<Song> songs, int userId) {
         this.id = id;
         this.songs = songs;
+        this.userId = userId;
     }
 
     public int getId() {
@@ -31,23 +33,32 @@ public class Playlist {
     }
 
     @Override
+    public String toString() {
+        return "Playlist{" +
+                "id=" + id +
+                ", userId=" + userId +
+                ", songs=" + songs +
+                '}';
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Playlist playlist = (Playlist) o;
-        return id == playlist.id && Objects.equals(songs, playlist.songs);
+        return id == playlist.id && userId == playlist.userId && Objects.equals(songs, playlist.songs);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, songs);
+        return Objects.hash(id, userId, songs);
     }
 
-    @Override
-    public String toString() {
-        return "Playlist{" +
-                "id=" + id +
-                ", songs=" + songs +
-                '}';
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    public int getUserId() {
+        return userId;
     }
 }
