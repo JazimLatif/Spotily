@@ -15,7 +15,7 @@ public class UserService {
     }
 
     public void addNewUser(User user) {
-        // logic
+
         userDAO.addNewUser(user);
     }
 
