@@ -15,7 +15,6 @@ public class UserDataAccessService {
         String sql = """
                 INSERT INTO users(username, email)
                 VALUES(?,?);
-                                
                 """;
         return jdbcTemplate.update(
                 sql,
