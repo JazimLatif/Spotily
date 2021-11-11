@@ -18,7 +18,7 @@ public class PlaylistController {
     public List<Playlist> getAllPlaylist(){ return playlistService.getAllPlaylists(); }
 
     @GetMapping("{id}")
-    public Optional<Playlist> selectPlaylistById(@PathVariable("id") int id){
+    public Playlist selectPlaylistById(@PathVariable("id") int id){
         return playlistService.selectPlaylistById(id);
     }
 

@@ -13,7 +13,7 @@ public class PlaylistDataAccessService {
 
     private JdbcTemplate jdbcTemplate;
 
-    public makePlaylist(ArrayList<String> answers){
+    public int makePlaylist(Playlist playlist){
 
 //         first need to create an empty playlist then use that id to connect it to song_id
 //         which is found by filtering by mood of song. Might be easier to remove song_id
@@ -37,8 +37,8 @@ public class PlaylistDataAccessService {
                 """;
         
         // need to double check above code...
-        
-        ArrayList<Playlist> newPlaylist = jdbcTemplate.update(sql, )
+
+        return jdbcTemplate.update(sql, playlist.getId(), playlist.getUserId(), playlist.getSongs());
 
     }
 
@@ -49,7 +49,7 @@ public class PlaylistDataAccessService {
                 """;
 //        come back to this sql query...
 
-        //                SELECT song_name
+        //                SELECT song_name, artist
         //                FROM songs
         //                INNER JOIN playlist_songs
         //                ON playlist_songs.song_id = songs.id
@@ -75,7 +75,7 @@ public class PlaylistDataAccessService {
     public Optional<Playlist> selectPlaylistbyId(int id){
         String sql = """
                 
-                SELECT song_name
+                SELECT song_name, artist
                 FROM songs
                 INNER JOIN playlist_songs
                 ON playlist_songs.song_id = songs.id
@@ -83,9 +83,9 @@ public class PlaylistDataAccessService {
                 
                 """;
 
-//        return jdbcTemplate.query(sql, new PlaylistRowMapper(), id)
-//                .stream()
-//                .findFirst();
+        return jdbcTemplate.query(sql, new PlaylistRowMapper(), id)
+                .stream()
+                .findFirst();
     }
 
     public boolean assignPlaylist(Playlist pl){

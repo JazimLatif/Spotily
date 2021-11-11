@@ -1,5 +1,6 @@
 package com.spotily.app.playlist;
 
+import com.spotily.app.exception.ResourceNotFound;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -48,16 +49,16 @@ public class PlaylistService {
         return playlistDataAccessService.getAllPlaylists();
     }
 
-    public Optional<Playlist> selectPlaylistById(int id) {
+    public Playlist selectPlaylistById(int id) {
         return playlistDataAccessService.selectPlaylistbyId(id)
-//                .orElseThrow(() -> new ResourceNotFound("Playlist " + id + "does not exist"));
+                .orElseThrow(() -> new ResourceNotFound("Playlist " + id + "does not exist"));
     }
 
 
     public void deletePlaylist(int id){
         Optional<Playlist> playlistOptional = playlistDataAccessService.selectPlaylistbyId(id);
         if(playlistOptional.isEmpty()){
-//            throw new ResourceNotFound("Playlist " + id + "does not exist");
+            throw new ResourceNotFound("Playlist " + id + "does not exist");
         }
         playlistDataAccessService.deletePlaylist(id);
 
