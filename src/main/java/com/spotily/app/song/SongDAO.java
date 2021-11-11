@@ -1,9 +1,11 @@
 package com.spotily.app.song;
 
+import java.util.Optional;
+
 public interface SongDAO {
     int addNewSong(Song song);
 
-    int deleteSong(int id);
+    Optional<Song> deleteSong(int id);
 
-    int editSongDetails(int id, Song song);
+    Optional<Song> editSongDetails(int id, Song song);
 }
