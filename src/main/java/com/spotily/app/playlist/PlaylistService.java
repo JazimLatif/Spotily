@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 @Service
@@ -24,7 +25,16 @@ public class PlaylistService {
             }
 
         }
+//        actually assign id? or in rowmapping leave that out and let sql handle it...
+        Playlist playlistObj = new Playlist(0, 0, playlist);
+
 //        currently doing one song per answer
+        assignUserPlaylist(playlistObj);
+
+    }
+
+    public void assignUserPlaylist(Playlist playlistObj){
+        playlistDataAccessService.assignPlaylist(playlistObj);
 
     }
 
@@ -38,10 +48,17 @@ public class PlaylistService {
         return playlistDataAccessService.getAllPlaylists();
     }
 
-//    public List<Playlist> selectPlaylistById(int id) {return playlistDataAccessService.selectPlaylistbyId}
+    public Optional<Playlist> selectPlaylistById(int id) {
+        return playlistDataAccessService.selectPlaylistbyId(id)
+//                .orElseThrow(() -> new ResourceNotFound("Playlist " + id + "does not exist"));
+    }
 
 
     public void deletePlaylist(int id){
+        Optional<Playlist> playlistOptional = playlistDataAccessService.selectPlaylistbyId(id);
+        if(playlistOptional.isEmpty()){
+//            throw new ResourceNotFound("Playlist " + id + "does not exist");
+        }
         playlistDataAccessService.deletePlaylist(id);
 
     }
