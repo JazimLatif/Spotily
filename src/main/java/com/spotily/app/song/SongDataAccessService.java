@@ -1,11 +1,14 @@
 package com.spotily.app.song;
 
-import com.spotily.app.user.User;
+import org.springframework.data.relational.core.mapping.Table;
+import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-@Repository
-public class SongDataAccessService {
+import java.util.Optional;
+
+@Repository("testspotily")
+public class SongDataAccessService{
 
     private JdbcTemplate jdbcTemplate;
 
@@ -50,4 +53,5 @@ public class SongDataAccessService {
                 id
         );
     }
+
 }

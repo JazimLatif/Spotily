@@ -1,8 +1,8 @@
 package com.spotily.app.user;
 
 import com.spotily.app.exception.ResourceNotFound;
-import com.spotily.app.playlist.Playlist;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -10,12 +10,15 @@ import java.util.Optional;
 @Service
 public class UserService {
 
-    private UserDAO userDAO;
 
+
+    private UserDAO userDAO;
     @Autowired
-    public UserService(UserDAO userDAO) {
+    public UserService(@Qualifier("testspotily") UserDAO userDAO) {
+
         this.userDAO = userDAO;
     }
+
 
     public void addNewUser(User user) {
 
@@ -40,9 +43,9 @@ public class UserService {
         userDAO.editUserAccountDetails(id, user);
     }
 
-    public Playlist getUserPlaylist(int id) {
+    public void getUserPlaylist(int id) {
         // logic - gets user details and randomly generated playlist
-        return userDAO.getUserPlaylist(id);
+        userDAO.getUserPlaylist(id);
     }
 
 }

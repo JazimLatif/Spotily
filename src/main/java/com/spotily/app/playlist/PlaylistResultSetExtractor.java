@@ -6,7 +6,6 @@ import org.springframework.dao.DataAccessException;
 import java.util.ArrayList;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
 import java.util.ArrayList;
 
 public class PlaylistResultSetExtractor implements ResultSetExtractor {

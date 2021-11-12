@@ -1,6 +1,7 @@
 package com.spotily.app.playlist;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class PlaylistController {
 
     private PlaylistService playlistService;
+    private PlaylistDataAccessService playlistDataAccessService;
 
   //  @GetMapping
   //  public List<Playlist> makePlaylist(){return playlistService.makePlaylist();}
@@ -28,4 +30,9 @@ public class PlaylistController {
 
     @DeleteMapping("{id}")
     public void deletePlaylist(@PathVariable("id") int id){ playlistService.deletePlaylist(id); }
+
+    @GetMapping("{mood}")
+    public ArrayList<Integer> getByMoodTest(@PathVariable("mood") String mood){
+        return playlistDataAccessService.getByMood(mood);
+    }
 }

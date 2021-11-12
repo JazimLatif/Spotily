@@ -1,6 +1,7 @@
 package com.spotily.app.playlist;
 
 import com.spotily.app.user.User;
+import org.springframework.data.relational.core.mapping.Table;
 import org.springframework.stereotype.Repository;
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -15,7 +16,7 @@ public class PlaylistDataAccessService {
 
     private JdbcTemplate jdbcTemplate;
 
-    public int makePlaylist(User user){
+    public int makePlaylist(Playlist playlist){
 
 
         String sql = """
@@ -24,27 +25,34 @@ public class PlaylistDataAccessService {
                 VALUES (?)
                 RETURNING id
                 )
-                
+                /*
                 WITH mood_filter AS (
                 SELECT id
                 FROM songs
                 INNER JOIN options on option_mood=songs.mood
                 WHERE mood='?'
                 )
-                
+                */
+
                 INSERT INTO playlist_maker (playlist_id, song_id)
                 VALUE (new_playlist, mood_filter);
-                     
+
                 """;
 
 
         return jdbcTemplate.update(
-                sql,
+                sql);
 //                playlist.getId(),
 //                playlist.getUserId(),
 //                playlist.getSongs().
-                user.getUsermood());
+//                user.getUsermood());
 
+
+    }
+    public void addToPlaylist(ArrayList<Integer> songId, int playlistId){
+        String sql = """
+                
+                """;
 
     }
 
@@ -64,12 +72,13 @@ public class PlaylistDataAccessService {
 //        add the sql query results to list
         return playlistList;
     }
-
 //    get list of song ids that match the mood indicated by answer
     public ArrayList<Integer> getByMood(String answer){
 //        sql query - may be easier to add a mood tag to the answers/options rather than the code
         String sql = """
-                SELECT id FROM songs WHERE mood = ?;
+                SELECT DISTINCT songs.id
+                FROM songs INNER JOIN options ON songs.mood = option_mood
+                WHERE option_text = ?;
                 """;
 
         //        ResultSet rs = jdbcTemplate.query(sql, answer);

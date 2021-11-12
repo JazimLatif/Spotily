@@ -4,7 +4,7 @@ import com.spotily.app.user.User;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(path="api/v1/spotily")
+@RequestMapping(path="api/v1/testspotily")
 public class SongController {
 
     private SongService songService;

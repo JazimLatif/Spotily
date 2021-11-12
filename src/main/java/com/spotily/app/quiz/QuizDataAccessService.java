@@ -1,5 +1,7 @@
 package com.spotily.app.quiz;
 
+import org.springframework.data.relational.core.mapping.Table;
+import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -7,7 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-@Repository("postgres")
+@Repository("testspotily")
 public class QuizDataAccessService {
 
     private JdbcTemplate jdbcTemplate;
