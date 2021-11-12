@@ -1,24 +1,59 @@
 package com.spotily.app.user;
 
-import com.spotily.app.playlist.Playlist;
+import com.spotily.app.song.Song;
+import com.spotily.app.song.SongRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public class UserDataAccessService {
+    JdbcTemplate jdbcTemplate;
 
     public int addNewUser(User user) {
-        throw new UnsupportedOperationException("not implemented");
+        String sql = """
+                INSERT INTO users(username, email)
+                VALUES(?,?);
+                """;
+        return jdbcTemplate.update(
+                sql,
+                user.getUsername(),
+                user.getPassword()
+        );
+
     }
 
     public int deleteUser(int id) {
-        throw new UnsupportedOperationException("not implemented");
+        String sql= """
+                REMOVE FROM users
+                WHERE id=?
+                """;
+        return jdbcTemplate.update(sql,id);
     }
 
     public int editUserAccountDetails(int id, User user) {
-        throw new UnsupportedOperationException("not implemented");
+        String sql= """
+                UPDATE TABLE users(username, email)
+                SET username=?,email=?
+                WHERE ID = ?;
+                """;
+        return jdbcTemplate.update(
+                sql,
+                user.getUsername(),
+                user.getEmail(),
+                user.getId()
+        );
+
     }
 
-    public Playlist getUserPlaylist(int id) {
-        throw new UnsupportedOperationException("not implemented");
+    public List<Song> getUserPlaylist(int id) {
+
+    String sql= """
+                SELECT * FROM playlist
+                WHERE id=?;
+                """;
+        return jdbcTemplate.query(sql,new SongRowMapper(),id);
+
     }
 }

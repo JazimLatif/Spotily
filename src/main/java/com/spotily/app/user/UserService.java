@@ -1,8 +1,11 @@
 package com.spotily.app.user;
 
+import com.spotily.app.exception.ResourceNotFound;
 import com.spotily.app.playlist.Playlist;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -20,12 +23,20 @@ public class UserService {
     }
 
     public void deleteUser(int id) {
-        // logic
+        Optional<User> userOptional = userDAO.deleteUser(id);
+
+        if (userOptional.isEmpty()) {
+            throw new ResourceNotFound("User not found");
+        }
         userDAO.deleteUser(id);
     }
 
     public void editUserAccountDetails(int id, User user) {
-        // logic - Optional for user without an id
+        Optional<User> userOptional = userDAO.editUserAccountDetails(id, user);
+
+        if (userOptional.isEmpty()) {
+            throw new ResourceNotFound("User account not found");
+        }
         userDAO.editUserAccountDetails(id, user);
     }
 
