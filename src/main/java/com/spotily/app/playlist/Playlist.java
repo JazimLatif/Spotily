@@ -7,11 +7,13 @@ import java.util.Objects;
 
 public class Playlist {
     private int id;
-    private List<Song> songs;
+    private int userId;
+    private List<Integer> songIds;
 
-    public Playlist(int id, List<Song> songs) {
+    public Playlist(int id, int userId, List<Integer> songIds) {
         this.id = id;
-        this.songs = songs;
+        this.userId = userId;
+        this.songIds = songIds;
     }
 
     public int getId() {
@@ -22,12 +24,21 @@ public class Playlist {
         this.id = id;
     }
 
-    public List<Song> getSongs() {
-        return songs;
+    public List<Integer> getSongs() {
+        return songIds;
     }
 
-    public void setSongs(List<Song> songs) {
-        this.songs = songs;
+    public void setSongs(List<Integer> songIds) {
+        this.songIds = songIds;
+    }
+
+    @Override
+    public String toString() {
+        return "Playlist{" +
+                "id=" + id +
+                ", userId=" + userId +
+                ", songIds=" + songIds +
+                '}';
     }
 
     @Override
@@ -35,19 +46,19 @@ public class Playlist {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Playlist playlist = (Playlist) o;
-        return id == playlist.id && Objects.equals(songs, playlist.songs);
+        return id == playlist.id && userId == playlist.userId && Objects.equals(songIds, playlist.songIds);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, songs);
+        return Objects.hash(id, userId, songIds);
     }
 
-    @Override
-    public String toString() {
-        return "Playlist{" +
-                "id=" + id +
-                ", songs=" + songs +
-                '}';
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    public int getUserId() {
+        return userId;
     }
 }
