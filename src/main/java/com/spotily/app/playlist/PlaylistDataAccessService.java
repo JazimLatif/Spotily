@@ -1,65 +1,65 @@
 package com.spotily.app.playlist;
 
+import com.spotily.app.user.User;
 import org.springframework.stereotype.Repository;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.lang.reflect.Array;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@Repository("postgres")
+@Repository("testspotily")
 public class PlaylistDataAccessService {
 
     private JdbcTemplate jdbcTemplate;
-//hello jason
-    public int makePlaylist(Playlist playlist){
 
-//         first need to create an empty playlist then use that id to connect it to song_id
-//         which is found by filtering by mood of song. Might be easier to remove song_id
-//         from playlist_songs and replace it with mood_id.
+    public int makePlaylist(User user){
+
 
         String sql = """
                 WITH new_playlist AS (
-                    INSERT INTO playlists (user_id)
-                    VALUES (?)
-                    RETURNING id
+                INSERT INTO playlists (user_id)
+                VALUES (?)
+                RETURNING id
                 )
                 
                 WITH mood_filter AS (
-                SELECT song_name, artist 
+                SELECT id
                 FROM songs
-                INNER JOIN options on option_mood=songs.mood 
-                WHERE mood='?';
+                INNER JOIN options on option_mood=songs.mood
+                WHERE mood='?'
                 )
                 
-                INSERT INTO playlist_songs (playlist_id, song_id)
+                INSERT INTO playlist_maker (playlist_id, song_id)
                 VALUE (new_playlist, mood_filter);
                      
                 """;
-        //
 
 
         return jdbcTemplate.update(
                 sql,
-                playlist.getId(),
-                playlist.getUserId(),
-                playlist.getSongs());
+//                playlist.getId(),
+//                playlist.getUserId(),
+//                playlist.getSongs().
+                user.getUsermood());
+
 
     }
 
     public List<Playlist> getAllPlaylists(){
 //        sql logic
         String sql = """ 
-                SELECT * FROM playlist_songs GROUP BY playlist_id;
+                SELECT * FROM playlist_maker GROUP BY playlist_id;
                 """;
 //        come back to this sql query...
 
         //                SELECT song_name, artist
         //                FROM songs
-        //                INNER JOIN playlist_songs
-        //                ON playlist_songs.song_id = songs.id
-        //                GROUP BY playlist_songs.playlist_id
+        //                INNER JOIN playlist_maker
+        //                ON playlist_maker.song_id = songs.id
+        //                GROUP BY playlist_maker.playlist_id
         List<Playlist> playlistList = jdbcTemplate.query(sql,  new PlaylistRowMapper());
 //        add the sql query results to list
         return playlistList;
@@ -71,9 +71,10 @@ public class PlaylistDataAccessService {
         String sql = """
                 SELECT id FROM songs WHERE mood = ?;
                 """;
-        ArrayList<Integer> songIdList = jdbcTemplate.queryForList(sql, answer);
+
+        //        ResultSet rs = jdbcTemplate.query(sql, answer);
 //        above needs work, get ids from the object map that the query returns
-        return songIdList;
+        return (ArrayList<Integer>) jdbcTemplate.query(sql, new PlaylistResultSetExtractor());
     }
 
     public int deletePlaylist(int id){ return 0;}
@@ -83,9 +84,9 @@ public class PlaylistDataAccessService {
                 
                 SELECT song_name, artist
                 FROM songs
-                INNER JOIN playlist_songs
-                ON playlist_songs.song_id = songs.id
-                WHERE playlist_songs.playlist_id = ?
+                INNER JOIN playlist_maker
+                ON playlist_maker.song_id = songs.id
+                WHERE playlist_maker.playlist_id = ?
                 
                 """;
 

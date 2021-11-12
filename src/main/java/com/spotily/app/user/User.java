@@ -9,15 +9,24 @@ public class User {
     private String username;
     private String password;
     private String email;
-//    private Playlist playlist;
+//  private Playlist playlist;
+    private Mood usermood;
 
-    public User(int id, String username, String email) {
+    public User(int id, String username, String email, Mood usermood) {
         this.id = id;
         this.username = username;
-//        this.password = password;
+//      this.password = password;
         this.email = email;
+        this.usermood = usermood;
     }
 
+    public Mood getUsermood() {
+        return usermood;
+    }
+
+    public void setUsermood(Mood mood) {
+        this.usermood = usermood;
+    }
 
     public int getId() {
         return id;

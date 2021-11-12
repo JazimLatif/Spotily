@@ -14,6 +14,9 @@ public class PlaylistController {
 
     private PlaylistService playlistService;
 
+  //  @GetMapping
+  //  public List<Playlist> makePlaylist(){return playlistService.makePlaylist();}
+
     @GetMapping
     public List<Playlist> getAllPlaylist(){ return playlistService.getAllPlaylists(); }
 
