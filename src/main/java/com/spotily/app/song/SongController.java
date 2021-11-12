@@ -13,19 +13,19 @@ public class SongController {
         this.songService = songService;
     }
 
-    @PostMapping
-    public void addNewSong(@RequestBody Song song) {
-        songService.addNewSong(song);
-    }
+//    @PostMapping
+//    public void addNewSong(@RequestBody Song song) {
+//        songService.addNewSong(song);
+//    }
 
-    @DeleteMapping("{id}")
-    public void deleteSong(@PathVariable("id") int id) {
-        songService.deleteSong(id);
-    }
-
-    @PutMapping("{id}")
-    public void editSongDetails(@PathVariable("id") int id, @RequestBody Song song) {
-        songService.editSongDetails(id, song);
-    }
+//    @DeleteMapping("/delete/{id}")
+//    public void deleteSong(@PathVariable("id") int id) {
+//        songService.deleteSong(id);
+//    }
+//
+//    @PutMapping("/put/{id}")
+//    public void editSongDetails(@PathVariable("id") int id, @RequestBody Song song) {
+//        songService.editSongDetails(id, song);
+//    }
 
 }

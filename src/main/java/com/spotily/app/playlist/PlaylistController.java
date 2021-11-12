@@ -19,13 +19,13 @@ public class PlaylistController {
   //  @GetMapping
   //  public List<Playlist> makePlaylist(){return playlistService.makePlaylist();}
 
-    @GetMapping
-    public List<Playlist> getAllPlaylist(){ return playlistService.getAllPlaylists(); }
+    //@GetMapping
+    //public List<Playlist> getAllPlaylist(){ return playlistService.getAllPlaylists(); }
 
-    @GetMapping("{id}")
-    public Playlist selectPlaylistById(@PathVariable("id") int id){
-        return playlistService.selectPlaylistById(id);
-    }
+//    @GetMapping("{id}")
+//    public Playlist selectPlaylistById(@PathVariable("id") int id){
+//        return playlistService.selectPlaylistById(id);
+//    }
 
 
     @DeleteMapping("{id}")

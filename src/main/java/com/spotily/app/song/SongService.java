@@ -12,14 +12,13 @@ public class SongService {
 
     private SongDAO songDAO;
 
-    @Autowired
-    public SongService( @Qualifier("testspotily") SongDAO songDAO) {
-        this.songDAO = songDAO;
-    }
+//    public SongService(SongDAO songDAO) {
+//        this.songDAO = songDAO;
+//    }
 
-    public void addNewSong(Song song) {
-        songDAO.addNewSong(song);
-    }
+//    public void addNewSong(Song song) {
+//        songDAO.addNewSong(song);
+//    }
 
     public void deleteSong(int id) {
         Optional<Song> songOptional = songDAO.deleteSong(id);

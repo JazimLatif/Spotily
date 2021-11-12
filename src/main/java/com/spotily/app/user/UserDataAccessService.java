@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository("testspotily")
+@Repository
 public class UserDataAccessService  {
     JdbcTemplate jdbcTemplate;
 

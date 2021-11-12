@@ -13,11 +13,11 @@ public class UserService {
 
 
     private UserDAO userDAO;
-    @Autowired
-    public UserService(@Qualifier("testspotily") UserDAO userDAO) {
-
-        this.userDAO = userDAO;
-    }
+    
+//    public UserService(@Qualifier("testspotily") UserDAO userDAO) {
+//
+//        this.userDAO = userDAO;
+//    }
 
 
     public void addNewUser(User user) {

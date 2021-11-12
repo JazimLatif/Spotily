@@ -19,15 +19,15 @@ public class UserController {
         userService.addNewUser(user);
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/delete/{id}")
     public void deleteUser(@PathVariable("id") int id) {
         userService.deleteUser(id);
     }
 
-    @PutMapping("{id}")
-    public void editUserAccountDetails(@PathVariable("id") int id, @RequestBody User user) {
-        userService.editUserAccountDetails(id, user);
-    }
+//    @PutMapping("/put/{id}")
+//    public void editUserAccountDetails(@PathVariable("id") int id, @RequestBody User user) {
+//        userService.editUserAccountDetails(id, user);
+//    }
 
     @GetMapping("{id}")
     public void getUserPlaylist(@PathVariable("id") int id) {

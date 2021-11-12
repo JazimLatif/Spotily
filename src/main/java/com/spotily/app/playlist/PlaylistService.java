@@ -12,6 +12,10 @@ import java.util.Random;
 public class PlaylistService {
     private PlaylistDataAccessService playlistDataAccessService;
 
+    public PlaylistService(PlaylistDataAccessService playlistDataAccessService) {
+        this.playlistDataAccessService = playlistDataAccessService;
+    }
+
     public void makePlaylist(ArrayList<String> answers){
 //        something to get the mood of each answer, then query the db for that mood and build playlist
 //        using int for song ids

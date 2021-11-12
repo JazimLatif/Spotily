@@ -11,10 +11,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@Repository("testspotily")
+@Repository
 public class PlaylistDataAccessService {
 
     private JdbcTemplate jdbcTemplate;
+
 
     public int makePlaylist(Playlist playlist){
 
@@ -76,9 +77,7 @@ public class PlaylistDataAccessService {
     public ArrayList<Integer> getByMood(String answer){
 //        sql query - may be easier to add a mood tag to the answers/options rather than the code
         String sql = """
-                SELECT DISTINCT songs.id
-                FROM songs INNER JOIN options ON songs.mood = option_mood
-                WHERE option_text = ?;
+                SELECT * FROM songs;
                 """;
 
         //        ResultSet rs = jdbcTemplate.query(sql, answer);

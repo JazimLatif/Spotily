@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-@Repository("testspotily")
+@Repository
 public class QuizDataAccessService {
 
     private JdbcTemplate jdbcTemplate;
