@@ -30,14 +30,14 @@ public class PlaylistService {
         Playlist playlistObj = new Playlist(0, 0, playlist);
 
 //        currently doing one song per answer
-        assignUserPlaylist(playlistObj);
+        playlistDataAccessService.makePlaylist(playlistObj);
 
     }
 
-    public void assignUserPlaylist(Playlist playlistObj){
-        playlistDataAccessService.assignPlaylist(playlistObj);
-
-    }
+//    public void assignUserPlaylist(Playlist playlistObj){
+//        playlistDataAccessService.assignPlaylist(playlistObj);
+//
+//    }
 
     public ArrayList<Integer> getByMood(String answer){
         ArrayList<Integer> songIds = playlistDataAccessService.getByMood(answer);

@@ -12,7 +12,7 @@ import java.util.Optional;
 public class PlaylistDataAccessService {
 
     private JdbcTemplate jdbcTemplate;
-
+//hello jason
     public int makePlaylist(Playlist playlist){
 
 //         first need to create an empty playlist then use that id to connect it to song_id
@@ -25,20 +25,26 @@ public class PlaylistDataAccessService {
                     VALUES (?)
                     RETURNING id
                 )
+                
                 WITH mood_filter AS (
-                    SELECT id
-                    FROM songs
-                    WHERE mood = ?
+                SELECT song_name, artist 
+                FROM songs
+                INNER JOIN options on option_mood=songs.mood 
+                WHERE mood='?';
                 )
                 
                 INSERT INTO playlist_songs (playlist_id, song_id)
                 VALUE (new_playlist, mood_filter);
                      
                 """;
-        
-        // need to double check above code...
+        //
 
-        return jdbcTemplate.update(sql, playlist.getId(), playlist.getUserId(), playlist.getSongs());
+
+        return jdbcTemplate.update(
+                sql,
+                playlist.getId(),
+                playlist.getUserId(),
+                playlist.getSongs());
 
     }
 
@@ -88,9 +94,9 @@ public class PlaylistDataAccessService {
                 .findFirst();
     }
 
-    public boolean assignPlaylist(Playlist pl){
-//        sql insert to add playlist to user, playlist obj has user id inside
-//        probably no need to add a playlist in another method, this will both add and assign
-        return false;
-    }
+//    public boolean assignPlaylist(Playlist pl){
+////        sql insert to add playlist to user, playlist obj has user id inside
+////        probably no need to add a playlist in another method, this will both add and assign
+//        return false;
+//    }
 }
