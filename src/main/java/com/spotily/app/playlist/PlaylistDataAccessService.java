@@ -16,6 +16,10 @@ public class PlaylistDataAccessService {
 
     private JdbcTemplate jdbcTemplate;
 
+    public PlaylistDataAccessService(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
+
 
     public int makePlaylist(Playlist playlist){
 
@@ -77,12 +81,15 @@ public class PlaylistDataAccessService {
     public ArrayList<Integer> getByMood(String answer){
 //        sql query - may be easier to add a mood tag to the answers/options rather than the code
         String sql = """
-                SELECT * FROM songs;
+                SELECT DISTINCT songs.id 
+                FROM songs INNER JOIN options 
+                ON songs.mood = option_mood 
+                WHERE option_text = ?;
                 """;
 
         //        ResultSet rs = jdbcTemplate.query(sql, answer);
 //        above needs work, get ids from the object map that the query returns
-        return (ArrayList<Integer>) jdbcTemplate.query(sql, new PlaylistResultSetExtractor());
+        return (ArrayList<Integer>) jdbcTemplate.query(sql, new PlaylistResultSetExtractor(), answer);
     }
 
     public int deletePlaylist(int id){ return 0;}

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,7 +15,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class PlaylistController {
 
     private PlaylistService playlistService;
-    private PlaylistDataAccessService playlistDataAccessService;
+//    private PlaylistDataAccessService playlistDataAccessService;
+
+    @Autowired
+    public PlaylistController(PlaylistService playlistService) {
+        this.playlistService = playlistService;
+    }
 
   //  @GetMapping
   //  public List<Playlist> makePlaylist(){return playlistService.makePlaylist();}
@@ -33,6 +39,6 @@ public class PlaylistController {
 
     @GetMapping("{mood}")
     public ArrayList<Integer> getByMoodTest(@PathVariable("mood") String mood){
-        return playlistDataAccessService.getByMood(mood);
+        return playlistService.getByMood(mood);
     }
 }

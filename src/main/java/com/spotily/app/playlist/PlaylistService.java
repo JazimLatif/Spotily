@@ -1,6 +1,7 @@
 package com.spotily.app.playlist;
 
 import com.spotily.app.exception.ResourceNotFound;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -12,6 +13,7 @@ import java.util.Random;
 public class PlaylistService {
     private PlaylistDataAccessService playlistDataAccessService;
 
+    @Autowired
     public PlaylistService(PlaylistDataAccessService playlistDataAccessService) {
         this.playlistDataAccessService = playlistDataAccessService;
     }
