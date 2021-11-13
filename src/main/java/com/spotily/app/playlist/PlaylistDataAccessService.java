@@ -20,45 +20,35 @@ public class PlaylistDataAccessService {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-
-    public int makePlaylist(Playlist playlist){
-
+// insert returning id, will initially get max id rather than returning
+    public int makeNewPlaylist(int userId){
 
         String sql = """
-                WITH new_playlist AS (
-                INSERT INTO playlists (user_id)
-                VALUES (?)
-                RETURNING id
-                )
-                /*
-                WITH mood_filter AS (
-                SELECT id
-                FROM songs
-                INNER JOIN options on option_mood=songs.mood
-                WHERE mood='?'
-                )
-                */
-
-                INSERT INTO playlist_maker (playlist_id, song_id)
-                VALUE (new_playlist, mood_filter);
-
+                INSERT INTO playlist (playlist_user)
+                VALUES (?);
                 """;
 
-
-        return jdbcTemplate.update(
-                sql);
-//                playlist.getId(),
-//                playlist.getUserId(),
-//                playlist.getSongs().
-//                user.getUsermood());
+        return jdbcTemplate.update(sql, userId);
 
 
     }
-    public void addToPlaylist(ArrayList<Integer> songId, int playlistId){
-        String sql = """
-                
-                """;
 
+    public int getNewestPlaylistId(){
+        String sql = """
+                SELECT id FROM playlist ORDER BY id DESC LIMIT 1;
+                """;
+        ArrayList<Integer> playlistIdArray = (ArrayList<Integer>) jdbcTemplate.query(sql, new PlaylistResultSetExtractor());
+        return playlistIdArray.get(0);
+    }
+
+    public int addToPlaylist(Integer songId, int playlistId){
+        String sql = """
+                INSERT INTO playlist_maker
+                (playlist_id, song_id)
+                VALUES (?, ?);
+                """;
+//        loop thru songIds in playlistservice and insert each into db with same playlist id passed above from makeplaylist
+        return jdbcTemplate.update(sql, songId, playlistId);
     }
 
     public List<Playlist> getAllPlaylists(){
@@ -116,3 +106,34 @@ public class PlaylistDataAccessService {
 //        return false;
 //    }
 }
+
+//    public int makePlaylist(ArrayList<Integer> playlist){
+//
+//
+//        String sql = """
+//                WITH new_playlist AS (
+//                INSERT INTO playlists (user_id)
+//                VALUES (?)
+//                RETURNING id
+//                )
+//                /*
+//                WITH mood_filter AS (
+//                SELECT id
+//                FROM songs
+//                INNER JOIN options on option_mood=songs.mood
+//                WHERE mood='?'
+//                )
+//                */
+//
+//                INSERT INTO playlist_maker (playlist_id, song_id)
+//                VALUE (new_playlist, mood_filter);
+//
+//                """;
+//
+//
+//        return jdbcTemplate.update(
+//                sql);
+////                playlist.getId(),
+////                playlist.getUserId(),
+////                playlist.getSongs().
+////                user.getUsermood());

@@ -44,7 +44,7 @@ public class QuizService {
 //        call the playlist method that takes this and turns into playlist
 //        check nonnulls has some values first else some error
         if (nonNulls.size()!=0){
-            playlistService.makePlaylist(nonNulls);
+            playlistService.makePlaylist(nonNulls, quiz.getUserId());
         }
 //        return nonNulls;
     }
