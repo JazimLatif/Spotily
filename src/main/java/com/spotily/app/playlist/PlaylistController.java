@@ -3,8 +3,8 @@ package com.spotily.app.playlist;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
+import com.spotily.app.playlist.filterplaylist.FilterPlaylist;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,15 +23,15 @@ public class PlaylistController {
   //  public List<Playlist> makePlaylist(){return playlistService.makePlaylist();}
 
     @GetMapping("/playlist")
-    public List<Playlist> getAllPlaylist(){ return playlistService.getAllPlaylists(); }
+    public List<FilterPlaylist> getAllPlaylist(){ return playlistService.getAllPlaylists(); }
 
     @GetMapping("/playlist/{id}")
-    public Playlist selectPlaylistById(@PathVariable("id") int id){
+    public List<FilterPlaylist> selectPlaylistById(@PathVariable("id") int id){
         return playlistService.selectPlaylistById(id);
     }
 
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/playlist/{id}")
     public void deletePlaylist(@PathVariable("id") int id){ playlistService.deletePlaylist(id); }
 
     @GetMapping("{mood}")
