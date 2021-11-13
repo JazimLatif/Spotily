@@ -64,15 +64,9 @@ public class PlaylistDataAccessService {
     public List<Playlist> getAllPlaylists(){
 //        sql logic
         String sql = """ 
-                SELECT * FROM playlist_maker GROUP BY playlist_id;
+                SELECT * FROM playlist;
                 """;
-//        come back to this sql query...
 
-        //                SELECT song_name, artist
-        //                FROM songs
-        //                INNER JOIN playlist_maker
-        //                ON playlist_maker.song_id = songs.id
-        //                GROUP BY playlist_maker.playlist_id
         List<Playlist> playlistList = jdbcTemplate.query(sql,  new PlaylistRowMapper());
 //        add the sql query results to list
         return playlistList;
@@ -97,11 +91,10 @@ public class PlaylistDataAccessService {
     public Optional<Playlist> selectPlaylistbyId(int id){
         String sql = """
                 
-                SELECT song_name, artist
-                FROM songs
-                INNER JOIN playlist_maker
-                ON playlist_maker.song_id = songs.id
-                WHERE playlist_maker.playlist_id = ?
+                SELECT *
+                FROM playlist
+                WHERE id = ?
+           
                 
                 """;
 
