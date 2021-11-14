@@ -70,6 +70,28 @@ public class QuizService {
 //        }
 //    }
 
+//    have an int return type to validate?
+    public void submitQuiz(Quiz quiz){
+        Optional<Integer> userId = quiz.getUserId();
+        ArrayList<String> answersGiven = new ArrayList<>();
+        for (Optional<String> ans: quiz.getAnswers()){
+            if (ans.isPresent()){
+                answersGiven.add(ans.get());
+            }
+            else{
+                return;
+//                placeholder here need to handle as error
+            }
+        }
+        if (userId.isPresent()){
+            playlistService.makePlaylist( answersGiven, userId.get());
+        }
+        else {
+//            placeholder here but need to handle as error
+            return;
+        }
+    }
+
 //    at some point need the user id when submitting
 //    public Quiz makeQuiz(int id){
 ////        maybe more logic to have this just show the questions, should be fine for now

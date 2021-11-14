@@ -48,11 +48,19 @@ public class QuizController {
         return quizService.makeRandomQuestionOptionsMap();
     }
 
+//    tested in thunder client - working but with an issue, hardcoded a number of questions
+//    which it is sometimes over and undershooting
+//    could cause issues when checking for null answers - but could maybe just add the answer optionals in the same loop lol
     @GetMapping("/fullquiztest")
     public Quiz getFullQuizTest(){
         return quizService.makeEmptyQuiz();
     }
 
+//tested in thunder client - working, creates new playlist with songs w correct tags
+    @PostMapping("/submitTest")
+    public void submitQuizTest(@RequestBody Quiz quiz){
+        quizService.submitQuiz(quiz);
+    }
 
 
 
