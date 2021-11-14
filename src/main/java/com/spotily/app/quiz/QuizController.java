@@ -1,21 +1,59 @@
 package com.spotily.app.quiz;
 
+import com.spotily.app.playlist.PlaylistService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/quiz")
 public class QuizController {
     private QuizService quizService;
 
-    @PostMapping
-    public void submitQuiz(@RequestBody Quiz quiz){
-//        do we need to do more here to create a quiz object?
-        quizService.submitQuiz(quiz);
+    @Autowired
+    public QuizController(QuizService quizService) {
+        this.quizService = quizService;
     }
 
-    @GetMapping("{id}")
-    public Quiz getQuiz(@PathVariable("id") int id){
-        return quizService.getQuizQuestions(id);
+//    @PostMapping
+//    public void submitQuiz(@RequestBody Quiz quiz){
+////        do we need to do more here to create a quiz object?
+//        quizService.submitQuiz(quiz);
+//    }
+
+//    @GetMapping("{id}")
+//    public Quiz getQuiz(@PathVariable("id") int id){
+//        return quizService.getQuizQuestions(id);
+//    }
+
+//    get text of a random q - successfully tested
+    @GetMapping("/randomq")
+    public String getRandomQuestionTest(){
+        return quizService.getRandomQ();
     }
+
+//    get all the options for a question given the question text - successfully tested
+    @GetMapping
+    public List getquestionOptionsTest(){
+        String testQ = "How are you feeling?";
+        return quizService.getQOptions(testQ);
+    }
+
+//    gets question - works, but shows the oddness of current quiz obj, may rejig
+    @GetMapping("/fullquestiontest")
+    public HashMap getFullQuestionsRandomTest(){
+        return quizService.makeRandomQuestionOptionsMap();
+    }
+
+    @GetMapping("/fullquiztest")
+    public Quiz getFullQuizTest(){
+        return quizService.makeEmptyQuiz();
+    }
+
+
+
 
 }
