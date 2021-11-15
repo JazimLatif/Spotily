@@ -31,12 +31,12 @@ public class Song {
         this.mood = mood;
     }
 
-    public String getSongname() {
+    public String getSongName() {
         return songName;
     }
 
-    public void setSongname(String songname) {
-        this.songName = songname;
+    public void setSongName(String songName) {
+        this.songName = songName;
     }
 
     public String getArtist() {
@@ -65,7 +65,7 @@ public class Song {
         return "Song{" +
                 "id=" + id +
                 ", mood='" + mood + '\'' +
-                ", songname='" + songName + '\'' +
+                ", songName='" + songName + '\'' +
                 ", artist='" + artist + '\'' +
                 '}';
     }

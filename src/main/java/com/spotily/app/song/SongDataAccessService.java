@@ -28,7 +28,7 @@ public class SongDataAccessService{
                 sql,
                 song.getMood(),
                 song.getArtist(),
-                song.getSongname()
+                song.getSongName()
         );
     }
 
@@ -60,7 +60,7 @@ public class SongDataAccessService{
                 sql,
                 song.getMood(),
                 song.getArtist(),
-                song.getSongname(),
+                song.getSongName(),
                 id
         );
     }
