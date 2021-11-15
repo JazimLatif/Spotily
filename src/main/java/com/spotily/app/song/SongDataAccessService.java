@@ -1,10 +1,12 @@
 package com.spotily.app.song;
 
+import com.spotily.app.user.UserResultSetExtractor;
 import org.springframework.data.relational.core.mapping.Table;
 import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 @Repository
@@ -19,7 +21,7 @@ public class SongDataAccessService{
     public int addNewSong(Song song) {
         // admin use
         String sql = """
-              INSERT INTO song(mood, artist, song_name)
+              INSERT INTO songs(mood, artist, song_name)
               VALUES(?, ?, ?);
                 """;
         return jdbcTemplate.update(
@@ -28,6 +30,15 @@ public class SongDataAccessService{
                 song.getArtist(),
                 song.getSongname()
         );
+    }
+
+    public ArrayList<Integer> getAdmin() {
+        String sql = """
+                SELECT users.id
+                FROM users 
+                WHERE users.admin = 'true';
+                """;
+        return (ArrayList<Integer>) jdbcTemplate.query(sql, new UserResultSetExtractor());
     }
 
     public int deleteSong(int id) {
