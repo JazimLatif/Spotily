@@ -82,6 +82,21 @@ public class PlaylistDataAccessService {
         return (ArrayList<Integer>) jdbcTemplate.query(sql, new PlaylistResultSetExtractor(), answer);
     }
 
+    public ArrayList<Integer> getByMoodAndTheme(String answer, int theme){
+//        sql query - may be easier to add a mood tag to the answers/options rather than the code
+        String sql = """
+                SELECT DISTINCT songs.id 
+                FROM songs INNER JOIN options 
+                ON songs.mood = option_mood 
+                WHERE option_text = ?
+                AND song_theme = ?;
+                """;
+
+        //        ResultSet rs = jdbcTemplate.query(sql, answer);
+//        above needs work, get ids from the object map that the query returns
+        return (ArrayList<Integer>) jdbcTemplate.query(sql, new PlaylistResultSetExtractor(), answer, theme);
+    }
+
     public int deletePlaylist(int id){ return 0;}
 
     public Optional<Playlist> selectPlaylistbyId(int id){
@@ -100,40 +115,4 @@ public class PlaylistDataAccessService {
                 .findFirst();
     }
 
-//    public boolean assignPlaylist(Playlist pl){
-////        sql insert to add playlist to user, playlist obj has user id inside
-////        probably no need to add a playlist in another method, this will both add and assign
-//        return false;
-//    }
 }
-
-//    public int makePlaylist(ArrayList<Integer> playlist){
-//
-//
-//        String sql = """
-//                WITH new_playlist AS (
-//                INSERT INTO playlists (user_id)
-//                VALUES (?)
-//                RETURNING id
-//                )
-//                /*
-//                WITH mood_filter AS (
-//                SELECT id
-//                FROM songs
-//                INNER JOIN options on option_mood=songs.mood
-//                WHERE mood='?'
-//                )
-//                */
-//
-//                INSERT INTO playlist_maker (playlist_id, song_id)
-//                VALUE (new_playlist, mood_filter);
-//
-//                """;
-//
-//
-//        return jdbcTemplate.update(
-//                sql);
-////                playlist.getId(),
-////                playlist.getUserId(),
-////                playlist.getSongs().
-////                user.getUsermood());

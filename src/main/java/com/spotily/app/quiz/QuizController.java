@@ -69,6 +69,13 @@ public class QuizController {
         quizService.addQuestion(question);
     }
 
+// tested in thunder client successfully
+    @PostMapping("/submitthemed/{tag}")
+    public void submitThemedQuizTest(@RequestBody Quiz quiz, @PathVariable("tag") int tag){ quizService.submitThemedQuiz(quiz, tag); }
+
+    @GetMapping("/getthemed/{tag}")
+    public Quiz getThemedQuizTest(@PathVariable("tag") int tag){ return quizService.makeThemedQuiz(tag); }
+
 
 
 }

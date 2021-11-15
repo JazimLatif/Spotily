@@ -30,6 +30,10 @@ public class QuizService {
         return quizDataAccessService.getRandomQuestion();
     }
 
+    public String getThemedQ(int theme){
+        return quizDataAccessService.getThemedQuestion(theme);
+    }
+
     public ArrayList<String> getQOptions(String question){
         return quizDataAccessService.getQuestionOptions(question);
     }
@@ -39,6 +43,16 @@ public class QuizService {
 //    probs another method, this still good to match question and options
     public HashMap<String, ArrayList<String>> makeRandomQuestionOptionsMap(){
         String randQ = getRandomQ();
+        ArrayList<String> matchingOptions = getQOptions(randQ);
+        HashMap options_map = new HashMap<String, ArrayList<String>>();
+        options_map.put(randQ, matchingOptions);
+//        Quiz fullQ = new Quiz(Optional.empty(), options_map, newOptional.empty());
+        return options_map;
+//        Optional<Integer> userId, HashMap<String, ArrayList<String>> questionsAndOptions, ArrayList<Optional<String>> answers
+    }
+
+    public HashMap<String, ArrayList<String>> makeThemedQuestionOptionsMap(int theme){
+        String randQ = getThemedQ(theme);
         ArrayList<String> matchingOptions = getQOptions(randQ);
         HashMap options_map = new HashMap<String, ArrayList<String>>();
         options_map.put(randQ, matchingOptions);
@@ -65,7 +79,35 @@ public class QuizService {
                 currentQuestions.put(newOptions.keySet().stream().findFirst().get(), newOptions.values().stream().findFirst().get());
             }
             for (int i = 0; i<fullQuiz.getQuestionsAndOptions().keySet().size(); i++){
-//                adding optional in separate loop to account for repeat question changing the number of total questions (so the quiz won't be rejected for a null answer)
+//                adding optional in separate loop to account for repeat question changing the number of total questions
+//                (so the number of answers will match number of questions after duplicates are gone)
+                ArrayList<Optional<String>> answerOptionals = fullQuiz.getAnswers();
+                answerOptionals.add(Optional.empty());
+                fullQuiz.setAnswers(answerOptionals);
+            }
+        }
+        return fullQuiz;
+    }
+
+    public Quiz makeThemedQuiz(int theme){
+        Quiz fullQuiz = new Quiz(Optional.empty(), new HashMap<>(), new ArrayList<>());
+
+        if (fullQuiz == null){
+            throw new ResourceNotFound("Error: quiz couldn't be created");
+
+        } else {
+            for (int i = 0; i < 5; i++) {
+//            add the option map from method to the quiz hashmap
+//                HashMap<String, ArrayList<String>> questionMap = makeRandomQuestionOptionsMap();
+//                missgin questions issue is due to adding same question again to hashmap where must be unique keys
+                HashMap<String, ArrayList<String>> currentQuestions = fullQuiz.getQuestionsAndOptions();
+                HashMap<String, ArrayList<String>> newOptions = makeThemedQuestionOptionsMap(theme);
+//                System.out.println(newOptions);
+                currentQuestions.put(newOptions.keySet().stream().findFirst().get(), newOptions.values().stream().findFirst().get());
+            }
+            for (int i = 0; i<fullQuiz.getQuestionsAndOptions().keySet().size(); i++){
+//                adding optional in separate loop to account for repeat question changing the number of total questions
+//                (so the number of answers will match number of questions after duplicates are gone)
                 ArrayList<Optional<String>> answerOptionals = fullQuiz.getAnswers();
                 answerOptionals.add(Optional.empty());
                 fullQuiz.setAnswers(answerOptionals);
@@ -98,6 +140,29 @@ public class QuizService {
         }
         if (userId.isPresent()){
             playlistService.makePlaylist( answersGiven, userId.get());
+        } else if (userId.isEmpty()){
+            throw new ResourceNotFound("Error: please sign in");
+        }
+//        else {
+//            return;
+//        }
+    }
+    public void submitThemedQuiz(Quiz quiz, int theme){
+        Optional<Integer> userId = quiz.getUserId();
+        ArrayList<String> answersGiven = new ArrayList<>();
+        for (Optional<String> ans: quiz.getAnswers()){
+            if (ans.isPresent()){
+                answersGiven.add(ans.get());
+            } else if(ans.isEmpty()){
+                throw new ResourceNotFound("Error: please select an answer");
+            }
+//            else{
+//                return;
+//
+//            }
+        }
+        if (userId.isPresent()){
+            playlistService.makeThemedPlaylist( answersGiven, userId.get(), theme);
         } else if (userId.isEmpty()){
             throw new ResourceNotFound("Error: please sign in");
         }

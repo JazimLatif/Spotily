@@ -56,6 +56,14 @@ public class QuizDataAccessService {
         return question;
      }
 
+    public String getThemedQuestion(int theme){
+        String sql = """
+                SELECT question_text FROM questions WHERE question_theme = ? ORDER BY RANDOM () LIMIT 1;
+                """;
+        String question = (String) jdbcTemplate.queryForObject(sql, new Object[] {theme}, String.class);
+        return question;
+    }
+
      public int getNewQuestionId(){
          String sql = """
                 SELECT questions.id FROM questions ORDER BY questions.id DESC LIMIT 1;

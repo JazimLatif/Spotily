@@ -33,10 +33,6 @@ public class PlaylistService {
                 playlist.add(randomSong);
             }
         }
-
-//        currently doing one song per answer
-//        need to make playlist returning id in makeplaylist
-
         playlistDataAccessService.makeNewPlaylist(userId);
 
         int newPlaylistId = playlistDataAccessService.getNewestPlaylistId();
@@ -50,13 +46,43 @@ public class PlaylistService {
 
     }
 
-//    public void assignUserPlaylist(Playlist playlistObj){
-//        playlistDataAccessService.assignPlaylist(playlistObj);
-//
-//    }
+    public void makeThemedPlaylist(ArrayList<String> answers, int userId, int theme){
+        ArrayList<Integer> playlist = new ArrayList<Integer>();
+//        iterates through each quiz answer and does the business logic
+        for (String ans: answers){
+//            calls get
+            ArrayList<Integer> songsWithMood = getByMoodAndTheme(ans, theme);
+//            select a random song from the arraylist returned by the function
+            int randomSong = songsWithMood.get(new Random().nextInt(songsWithMood.size()));
+//            check not already in playlist
+            if (!playlist.contains(randomSong)){
+//                adds otherwise
+                playlist.add(randomSong);
+            }
+        }
+        playlistDataAccessService.makeNewPlaylist(userId);
+
+        int newPlaylistId = playlistDataAccessService.getNewestPlaylistId();
+        System.out.println(newPlaylistId);
+//        to pass here and then can use to add to playlist_songs join table
+        for (int i = 0; i<playlist.size(); i++){
+            System.out.println(Integer.toString(playlist.get(i)) +" "+  Integer.toString(newPlaylistId));
+            playlistDataAccessService.addToPlaylist(newPlaylistId, playlist.get(i));
+        }
+
+
+    }
 
     public ArrayList<Integer> getByMood(String answer){
         ArrayList<Integer> songIds = playlistDataAccessService.getByMood(answer);
+        if(songIds.isEmpty()){
+            throw new ResourceNotFound("No " +answer+ " songs found");
+        }
+        return songIds;
+    }
+
+    public ArrayList<Integer> getByMoodAndTheme(String answer, int theme){
+        ArrayList<Integer> songIds = playlistDataAccessService.getByMoodAndTheme(answer, theme);
         if(songIds.isEmpty()){
             throw new ResourceNotFound("No " +answer+ " songs found");
         }
