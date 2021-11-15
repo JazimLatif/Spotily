@@ -1,15 +1,13 @@
 package com.spotily.app.playlist;
 
-import com.spotily.app.user.User;
-import org.springframework.data.relational.core.mapping.Table;
+import com.spotily.app.playlist.filterplaylist.FilterPlaylist;
+import com.spotily.app.playlist.filterplaylist.FilterPlaylistRowMapper;
 import org.springframework.stereotype.Repository;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import java.lang.reflect.Array;
-import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Repository
 public class PlaylistDataAccessService {
@@ -51,22 +49,20 @@ public class PlaylistDataAccessService {
         return jdbcTemplate.update(sql, songId, playlistId);
     }
 
-    public List<Playlist> getAllPlaylists(){
-//        sql logic
+    public List<FilterPlaylist> getAllPlaylists(){
         String sql = """ 
-                SELECT * FROM playlist_maker GROUP BY playlist_id;
+                SELECT *                                                         
+                FROM songs                                                                      
+                INNER JOIN playlist_maker                                                       
+                ON songs.id = playlist_maker.song_id
+                ORDER BY playlist_id
+                 
                 """;
-//        come back to this sql query...
 
-        //                SELECT song_name, artist
-        //                FROM songs
-        //                INNER JOIN playlist_maker
-        //                ON playlist_maker.song_id = songs.id
-        //                GROUP BY playlist_maker.playlist_id
-        List<Playlist> playlistList = jdbcTemplate.query(sql,  new PlaylistRowMapper());
-//        add the sql query results to list
+        List<FilterPlaylist> playlistList = jdbcTemplate.query(sql,  new FilterPlaylistRowMapper());
         return playlistList;
     }
+
 //    get list of song ids that match the mood indicated by answer
     public ArrayList<Integer> getByMood(String answer){
 //        sql query - may be easier to add a mood tag to the answers/options rather than the code
@@ -82,22 +78,39 @@ public class PlaylistDataAccessService {
         return (ArrayList<Integer>) jdbcTemplate.query(sql, new PlaylistResultSetExtractor(), answer);
     }
 
-    public int deletePlaylist(int id){ return 0;}
 
-    public Optional<Playlist> selectPlaylistbyId(int id){
+
+    public int deletePlaylist(int id){
+        String sql = """
+                DELETE FROM playlist_maker
+                WHERE playlist_id = ?            
+                """;
+        jdbcTemplate.update(sql, id);
+
+        String sql2 = """
+                
+                DELETE FROM playlist
+                WHERE id = ?
+                """;
+
+        return jdbcTemplate.update(sql2, id);
+    }
+
+
+    public List<FilterPlaylist> selectPlaylistbyId(int id){
         String sql = """
                 
-                SELECT song_name, artist
-                FROM songs
-                INNER JOIN playlist_maker
-                ON playlist_maker.song_id = songs.id
-                WHERE playlist_maker.playlist_id = ?
+                SELECT *                                                         
+                FROM songs                                                                      
+                INNER JOIN playlist_maker                                                       
+                ON songs.id = playlist_maker.song_id                                            
+                WHERE playlist_id = ?
                 
                 """;
 
-        return jdbcTemplate.query(sql, new PlaylistRowMapper(), id)
+        return jdbcTemplate.query(sql, new FilterPlaylistRowMapper(), id)
                 .stream()
-                .findFirst();
+                .collect(Collectors.toList());
     }
 
 //    public boolean assignPlaylist(Playlist pl){
