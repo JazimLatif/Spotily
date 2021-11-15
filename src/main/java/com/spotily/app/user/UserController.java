@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping(path="/api/user")
 public class UserController {
 
     private UserService userService;
@@ -14,9 +14,14 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping
-    public void addNewUser(@RequestBody User user) {
+    @PostMapping("/register")
+    public void createAccount(@RequestBody User user) {
         userService.addNewUser(user);
+    }
+
+    @PostMapping("register/admin")
+    public void createAdminAccount(@RequestBody User user) {
+        userService.addAdminUser(user);
     }
 
     @DeleteMapping("/delete/{id}")
@@ -24,14 +29,14 @@ public class UserController {
         userService.deleteUser(id);
     }
 
-//    @PutMapping("/put/{id}")
-//    public void editUserAccountDetails(@PathVariable("id") int id, @RequestBody User user) {
-//        userService.editUserAccountDetails(id, user);
-//    }
-
-    @GetMapping("{id}")
-    public void getUserPlaylist(@PathVariable("id") int id) {
-        userService.getUserPlaylist(id);
+    @PutMapping("/update/{id}")
+    public void editUserAccountDetails(@PathVariable("id") int id, @RequestBody User user) {
+        userService.editUserAccountDetails(id, user);
     }
+
+//    @GetMapping("{id}")
+//    public void getUserPlaylist(@PathVariable("id") int id) {
+//        userService.getUserPlaylist(id);
+//    }
 
 }

@@ -1,0 +1,2 @@
+ALTER TABLE users
+RENAME COLUMN role TO admin;
