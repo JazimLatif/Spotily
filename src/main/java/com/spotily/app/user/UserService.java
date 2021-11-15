@@ -14,7 +14,7 @@ public class UserService {
 
     private UserDataAccessService userDataAccessService;
     
-    public UserService(@Qualifier("testspotily") UserDataAccessService userDataAccessService) {
+    public UserService(UserDataAccessService userDataAccessService) {
 
         this.userDataAccessService = userDataAccessService;
     }
