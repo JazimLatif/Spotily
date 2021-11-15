@@ -1,6 +1,7 @@
 package com.spotily.app.song;
 
 import com.spotily.app.user.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -9,13 +10,14 @@ public class SongController {
 
     private SongService songService;
 
+    @Autowired
     public SongController(SongService songService) {
         this.songService = songService;
     }
 
-    @PostMapping
-    public void addNewSong(@RequestBody Song song) {
-        songService.addNewSong(song);
+    @PostMapping("addSong/{adminId}")
+    public void addNewSong(@PathVariable("adminId") int adminId, @RequestBody Song song) {
+        songService.addNewSong(adminId, song);
     }
 
     @DeleteMapping("/delete/{id}")

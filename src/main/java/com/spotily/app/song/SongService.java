@@ -1,22 +1,30 @@
 package com.spotily.app.song;
 
-import com.spotily.app.exception.ResourceNotFound;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 @Service
 public class SongService {
-    SongDataAccessService songDataAccessService;
 
+    private SongDataAccessService songDataAccessService;
+
+    @Autowired
     public SongService(SongDataAccessService songDataAccessService) {
         this.songDataAccessService = songDataAccessService;
     }
 
-    public void addNewSong(Song song) {
-        songDataAccessService.addNewSong(song);
+
+    public void addNewSong(int adminId, Song song) {
+        ArrayList<Integer> AdminIds = songDataAccessService.getAdmin();
+        if (AdminIds.contains(adminId)) {
+            songDataAccessService.addNewSong(song);
+        } else {
+            throw new UnsupportedOperationException("Only Admins are allowed to add songs");
+        }
     }
 
     public void deleteSong(int id) {

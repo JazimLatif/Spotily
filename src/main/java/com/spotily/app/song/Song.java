@@ -5,13 +5,13 @@ import java.util.Objects;
 public class Song {
     private int id;
     private String mood;
-    private String songname;
+    private String songName;
     private String artist;
 
-    public Song(int id, String mood, String songname, String artist) {
+    public Song(int id, String mood, String songName, String artist) {
         this.id = id;
         this.mood = mood;
-        this.songname = songname;
+        this.songName = songName;
         this.artist = artist;
     }
 
@@ -32,11 +32,11 @@ public class Song {
     }
 
     public String getSongname() {
-        return songname;
+        return songName;
     }
 
     public void setSongname(String songname) {
-        this.songname = songname;
+        this.songName = songname;
     }
 
     public String getArtist() {
@@ -52,12 +52,12 @@ public class Song {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Song song = (Song) o;
-        return id == song.id && Objects.equals(mood, song.mood) && Objects.equals(songname, song.songname) && Objects.equals(artist, song.artist);
+        return id == song.id && Objects.equals(mood, song.mood) && Objects.equals(songName, song.songName) && Objects.equals(artist, song.artist);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, mood, songname, artist);
+        return Objects.hash(id, mood, songName, artist);
     }
 
     @Override
@@ -65,7 +65,7 @@ public class Song {
         return "Song{" +
                 "id=" + id +
                 ", mood='" + mood + '\'' +
-                ", songname='" + songname + '\'' +
+                ", songname='" + songName + '\'' +
                 ", artist='" + artist + '\'' +
                 '}';
     }

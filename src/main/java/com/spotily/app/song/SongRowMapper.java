@@ -13,7 +13,7 @@ import java.sql.SQLException;
                     rs.getInt("id"),
                     rs.getString("mood"),
                     rs.getString("artist"),
-                    rs.getString("songname"));
+                    rs.getString("song_name"));
 
             return song;
         }
