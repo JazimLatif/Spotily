@@ -4,6 +4,7 @@ import com.spotily.app.playlist.PlaylistDataAccessService;
 import com.spotily.app.playlist.PlaylistService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.spotily.app.exception.ResourceNotFound;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -48,17 +49,27 @@ public class QuizService {
 
 //    could have number of questions be a argument for the function? if want to vary
     public Quiz makeEmptyQuiz(){
-        Quiz fullQuiz = new Quiz(Optional.empty(), new HashMap<>(), new ArrayList<>(List.of(
-                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
-                Optional.empty()
-        )));
-        for (int i=0; i<5; i++){
+        Quiz fullQuiz = new Quiz(Optional.empty(), new HashMap<>(), new ArrayList<>());
+
+        if (fullQuiz == null){
+            throw new ResourceNotFound("Error: quiz couldn't be created");
+
+        } else {
+            for (int i = 0; i < 5; i++) {
 //            add the option map from method to the quiz hashmap
-            HashMap<String, ArrayList<String>> questionMap = makeRandomQuestionOptionsMap();
-            HashMap<String, ArrayList<String>> currentQuestions = fullQuiz.getQuestionsAndOptions();
-            HashMap<String, ArrayList<String>> newOptions = makeRandomQuestionOptionsMap();
-            currentQuestions.put(newOptions.keySet().stream().findFirst().get(), newOptions.values().stream().findFirst().get());
-//             could also add optional to arraylist -hardcoded for now
+//                HashMap<String, ArrayList<String>> questionMap = makeRandomQuestionOptionsMap();
+//                missgin questions issue is due to adding same question again to hashmap where must be unique keys
+                HashMap<String, ArrayList<String>> currentQuestions = fullQuiz.getQuestionsAndOptions();
+                HashMap<String, ArrayList<String>> newOptions = makeRandomQuestionOptionsMap();
+//                System.out.println(newOptions);
+                currentQuestions.put(newOptions.keySet().stream().findFirst().get(), newOptions.values().stream().findFirst().get());
+            }
+            for (int i = 0; i<fullQuiz.getQuestionsAndOptions().keySet().size(); i++){
+//                adding optional in separate loop to account for repeat question changing the number of total questions (so the quiz won't be rejected for a null answer)
+                ArrayList<Optional<String>> answerOptionals = fullQuiz.getAnswers();
+                answerOptionals.add(Optional.empty());
+                fullQuiz.setAnswers(answerOptionals);
+            }
         }
         return fullQuiz;
     }
@@ -77,18 +88,36 @@ public class QuizService {
         for (Optional<String> ans: quiz.getAnswers()){
             if (ans.isPresent()){
                 answersGiven.add(ans.get());
+            } else if(ans.isEmpty()){
+                throw new ResourceNotFound("Error: please select an answer");
             }
-            else{
-                return;
-//                placeholder here need to handle as error
-            }
+//            else{
+//                return;
+//
+//            }
         }
         if (userId.isPresent()){
             playlistService.makePlaylist( answersGiven, userId.get());
+        } else if (userId.isEmpty()){
+            throw new ResourceNotFound("Error: please sign in");
         }
-        else {
-//            placeholder here but need to handle as error
-            return;
+//        else {
+//            return;
+//        }
+    }
+//wip - needs mood as well as question and options
+//    so outer hashmap key = question, which has a hashmap of options and moods
+    public void addQuestion(HashMap<String, HashMap<String, String>> qAndOptions){
+        String question = qAndOptions.keySet().stream().findFirst().get();
+        HashMap<String, String> optionsAndMoods = qAndOptions.get(question);
+//        add question
+        quizDataAccessService.addQuestion(question);
+//      get latest question id
+        int newQId = quizDataAccessService.getNewQuestionId();
+//        and add each option to the q with that id
+        for(HashMap.Entry<String, String> kvSet : optionsAndMoods.entrySet()){
+            quizDataAccessService.addOption(newQId, kvSet.getKey(), kvSet.getValue());
+
         }
     }
 

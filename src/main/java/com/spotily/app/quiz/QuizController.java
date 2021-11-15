@@ -62,6 +62,13 @@ public class QuizController {
         quizService.submitQuiz(quiz);
     }
 
+//    tested in thunder client - successfully adds question and all options
+//    may come back and adjust so only admin users can add
+    @PostMapping("/submitQuestionTest")
+    public void submitQuestionTest(@RequestBody HashMap<String, HashMap<String, String>> question){
+        quizService.addQuestion(question);
+    }
+
 
 
 }

@@ -56,6 +56,32 @@ public class QuizDataAccessService {
         return question;
      }
 
+     public int getNewQuestionId(){
+         String sql = """
+                SELECT questions.id FROM questions ORDER BY questions.id DESC LIMIT 1;
+                """;
+         int questionId = (int) jdbcTemplate.queryForObject(sql, new Object[] {}, Integer.class);
+         return questionId;
+     }
+
+     public int addQuestion(String question){
+        String sql = """
+                INSERT INTO 
+                questions (question_text) 
+                VALUES (?);
+                """;
+        return jdbcTemplate.update(sql, question);
+     }
+
+    public int addOption(int questionId, String option, String mood){
+        String sql = """
+                INSERT INTO 
+                options (question_id, option_text, option_mood) 
+                VALUES (?, ?, ?);
+                """;
+        return jdbcTemplate.update(sql, questionId, option, mood);
+    }
+
 //    public Quiz getQuizInfoById(int id){
 //// note this is for getting the quiz just to display questions
 //        String sql = """
