@@ -18,7 +18,6 @@ public class PlaylistService {
         this.playlistDataAccessService = playlistDataAccessService;
     }
 
-//
     public void makePlaylist(ArrayList<String> answers, int userId){
         ArrayList<Integer> playlist = new ArrayList<Integer>();
 //        iterates through each quiz answer and does the business logic
@@ -34,10 +33,8 @@ public class PlaylistService {
             }
         }
         playlistDataAccessService.makeNewPlaylist(userId);
-
         int newPlaylistId = playlistDataAccessService.getNewestPlaylistId();
-        System.out.println(newPlaylistId);
-//        to pass here and then can use to add to playlist_songs join table
+
         for (int i = 0; i<playlist.size(); i++){
             System.out.println(Integer.toString(playlist.get(i)) +" "+  Integer.toString(newPlaylistId));
             playlistDataAccessService.addToPlaylist(newPlaylistId, playlist.get(i));
@@ -48,28 +45,19 @@ public class PlaylistService {
 
     public void makeThemedPlaylist(ArrayList<String> answers, int userId, int theme){
         ArrayList<Integer> playlist = new ArrayList<Integer>();
-//        iterates through each quiz answer and does the business logic
         for (String ans: answers){
-//            calls get
             ArrayList<Integer> songsWithMood = getByMoodAndTheme(ans, theme);
-//            select a random song from the arraylist returned by the function
             int randomSong = songsWithMood.get(new Random().nextInt(songsWithMood.size()));
-//            check not already in playlist
             if (!playlist.contains(randomSong)){
-//                adds otherwise
                 playlist.add(randomSong);
             }
         }
         playlistDataAccessService.makeNewPlaylist(userId);
-
         int newPlaylistId = playlistDataAccessService.getNewestPlaylistId();
-        System.out.println(newPlaylistId);
-//        to pass here and then can use to add to playlist_songs join table
         for (int i = 0; i<playlist.size(); i++){
             System.out.println(Integer.toString(playlist.get(i)) +" "+  Integer.toString(newPlaylistId));
             playlistDataAccessService.addToPlaylist(newPlaylistId, playlist.get(i));
         }
-
 
     }
 
@@ -89,7 +77,6 @@ public class PlaylistService {
         return songIds;
     }
 
-
     public List<Playlist> getAllPlaylists(){return playlistDataAccessService.getAllPlaylists();}
 
     public Playlist selectPlaylistById(int id) {
@@ -97,14 +84,12 @@ public class PlaylistService {
                 .orElseThrow(() -> new ResourceNotFound("Playlist " + id + "does not exist"));
     }
 
-
     public void deletePlaylist(int id){
         Optional<Playlist> playlistOptional = playlistDataAccessService.selectPlaylistbyId(id);
         if(playlistOptional.isEmpty()){
             throw new ResourceNotFound("Playlist " + id + "does not exist");
         }
         playlistDataAccessService.deletePlaylist(id);
-
     }
 
     public int newPlaylistTest(int userId){

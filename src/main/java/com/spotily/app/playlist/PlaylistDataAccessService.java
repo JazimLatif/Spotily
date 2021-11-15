@@ -20,17 +20,12 @@ public class PlaylistDataAccessService {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-// insert returning id, will initially get max id rather than returning
     public int makeNewPlaylist(int userId){
-
         String sql = """
                 INSERT INTO playlist (playlist_user)
                 VALUES (?);
                 """;
-
         return jdbcTemplate.update(sql, userId);
-
-
     }
 
     public int getNewestPlaylistId(){
@@ -47,12 +42,10 @@ public class PlaylistDataAccessService {
                 (playlist_id, song_id)
                 VALUES (?, ?);
                 """;
-//        loop thru songIds in playlistservice and insert each into db with same playlist id passed above from makeplaylist
         return jdbcTemplate.update(sql, songId, playlistId);
     }
 
     public List<Playlist> getAllPlaylists(){
-//        sql logic
         String sql = """ 
                 SELECT * FROM playlist_maker GROUP BY playlist_id;
                 """;
@@ -67,23 +60,19 @@ public class PlaylistDataAccessService {
 //        add the sql query results to list
         return playlistList;
     }
+
 //    get list of song ids that match the mood indicated by answer
     public ArrayList<Integer> getByMood(String answer){
-//        sql query - may be easier to add a mood tag to the answers/options rather than the code
         String sql = """
                 SELECT DISTINCT songs.id 
                 FROM songs INNER JOIN options 
                 ON songs.mood = option_mood 
                 WHERE option_text = ?;
                 """;
-
-        //        ResultSet rs = jdbcTemplate.query(sql, answer);
-//        above needs work, get ids from the object map that the query returns
         return (ArrayList<Integer>) jdbcTemplate.query(sql, new PlaylistResultSetExtractor(), answer);
     }
 
     public ArrayList<Integer> getByMoodAndTheme(String answer, int theme){
-//        sql query - may be easier to add a mood tag to the answers/options rather than the code
         String sql = """
                 SELECT DISTINCT songs.id 
                 FROM songs INNER JOIN options 
@@ -91,9 +80,6 @@ public class PlaylistDataAccessService {
                 WHERE option_text = ?
                 AND song_theme = ?;
                 """;
-
-        //        ResultSet rs = jdbcTemplate.query(sql, answer);
-//        above needs work, get ids from the object map that the query returns
         return (ArrayList<Integer>) jdbcTemplate.query(sql, new PlaylistResultSetExtractor(), answer, theme);
     }
 

@@ -5,15 +5,11 @@ import java.util.*;
 //the quiz object will represent a complete quiz
 public class Quiz {
 
-//    this class now represents an individual question, and the quiz will just be a collection of these
-//    optional userid, don't need it to get questions, can make it needed or not to submit
+//    this class now represents a quiz that can be filled in or not, to be built out of random qs from db
     private Optional<Integer> userId;
-//    optional
     private HashMap<String, ArrayList<String>> questionsAndOptions;
 //    private ArrayList<String> options;
-//    check whether each answer is null at the point of submit
     private ArrayList<Optional<String>> answers;
-
 
     public Quiz(Optional<Integer> userId, HashMap<String, ArrayList<String>> questionsAndOptions, ArrayList<Optional<String>> answers) {
         this.userId = userId;
