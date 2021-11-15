@@ -20,14 +20,14 @@ public class SongController {
         songService.addNewSong(adminId, song);
     }
 
-    @DeleteMapping("/delete/{id}")
-    public void deleteSong(@PathVariable("id") int id) {
-        songService.deleteSong(id);
+    @DeleteMapping("/delete/{adminId}/{id}")
+    public void deleteSong(@PathVariable("adminId") int adminId, @PathVariable("id") int id) {
+        songService.deleteSong(adminId, id);
     }
 
-    @PutMapping("/put/{id}")
-    public void editSongDetails(@PathVariable("id") int id, @RequestBody Song song) {
-        songService.editSongDetails(id, song);
+    @PutMapping("/update/{adminId}/{id}")
+    public void editSongDetails(@PathVariable("adminId") int adminId, @PathVariable("id") int id, @RequestBody Song song) {
+        songService.editSongDetails(adminId, id, song);
     }
 
 }
