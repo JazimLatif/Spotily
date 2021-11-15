@@ -9,33 +9,32 @@ import java.util.Optional;
 
 @Service
 public class SongService {
+    SongDataAccessService songDataAccessService;
 
-    private SongDAO songDAO;
+    public SongService(SongDataAccessService songDataAccessService) {
+        this.songDataAccessService = songDataAccessService;
+    }
 
-//    public SongService(SongDAO songDAO) {
-//        this.songDAO = songDAO;
-//    }
-
-//    public void addNewSong(Song song) {
-//        songDAO.addNewSong(song);
-//    }
+    public void addNewSong(Song song) {
+        songDataAccessService.addNewSong(song);
+    }
 
     public void deleteSong(int id) {
-        Optional<Song> songOptional = songDAO.deleteSong(id);
+//        Optional<Song> songOptional = songDataAccessService.deleteSong(id);
 
-        if(songOptional.isEmpty()){
-            throw new ResourceNotFound("Song not found, field can't be empty");
-        }
-        songDAO.deleteSong(id);
+//        if(songOptional.isEmpty()){
+//            throw new ResourceNotFound("Song not found, field can't be empty");
+//        }
+        songDataAccessService.deleteSong(id);
     }
 
     public void editSongDetails(int id, Song song) {
 
-        Optional<Song> songOptional = songDAO.editSongDetails(id, song);
-
-        if (songOptional.isEmpty()){
-            throw new ResourceNotFound("Song not found, field can't be empty");
-        }
-        songDAO.editSongDetails(id, song);
+//        Optional<Song> songOptional = songDataAccessService.editSongDetails(id, song);
+//
+//        if (songOptional.isEmpty()){
+//            throw new ResourceNotFound("Song not found, field can't be empty");
+//        }
+        songDataAccessService.editSongDetails(id, song);
     }
 }

@@ -12,40 +12,40 @@ public class UserService {
 
 
 
-    private UserDAO userDAO;
+    private UserDataAccessService userDataAccessService;
     
-//    public UserService(@Qualifier("testspotily") UserDAO userDAO) {
-//
-//        this.userDAO = userDAO;
-//    }
+    public UserService(UserDataAccessService userDataAccessService) {
+
+        this.userDataAccessService = userDataAccessService;
+    }
 
 
     public void addNewUser(User user) {
 
-        userDAO.addNewUser(user);
+        userDataAccessService.addNewUser(user);
     }
 
     public void deleteUser(int id) {
-        Optional<User> userOptional = userDAO.deleteUser(id);
-
-        if (userOptional.isEmpty()) {
-            throw new ResourceNotFound("User not found");
-        }
-        userDAO.deleteUser(id);
+//        Optional<User> userOptional = userDataAccessService.deleteUser(id);
+//
+//        if (userOptional.isEmpty()) {
+//            throw new ResourceNotFound("User not found");
+//        }
+        userDataAccessService.deleteUser(id);
     }
 
     public void editUserAccountDetails(int id, User user) {
-        Optional<User> userOptional = userDAO.editUserAccountDetails(id, user);
-
-        if (userOptional.isEmpty()) {
-            throw new ResourceNotFound("User account not found");
-        }
-        userDAO.editUserAccountDetails(id, user);
+//        Optional<User> userOptional = userDataAccessService.editUserAccountDetails(id, user);
+//
+//        if (userOptional.isEmpty()) {
+//            throw new ResourceNotFound("User account not found");
+//        }
+        userDataAccessService.editUserAccountDetails(id, user);
     }
 
     public void getUserPlaylist(int id) {
         // logic - gets user details and randomly generated playlist
-        userDAO.getUserPlaylist(id);
+        userDataAccessService.getUserPlaylist(id);
     }
 
 }
