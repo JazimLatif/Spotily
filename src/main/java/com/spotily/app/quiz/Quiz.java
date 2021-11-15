@@ -1,47 +1,48 @@
 package com.spotily.app.quiz;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 //the quiz object will represent a complete quiz
 public class Quiz {
 
-    private int id;
-    private int userId;
-    private HashMap<String, Optional<String>> questionsAndAnswers;
+//    this class now represents an individual question, and the quiz will just be a collection of these
+//    optional userid, don't need it to get questions, can make it needed or not to submit
+    private Optional<Integer> userId;
+//    optional
+    private HashMap<String, ArrayList<String>> questionsAndOptions;
+//    private ArrayList<String> options;
+//    check whether each answer is null at the point of submit
+    private ArrayList<Optional<String>> answers;
 
 
-    public Quiz(int id, int userId, HashMap<String, Optional<String>> questionsAndAnswers) {
-        this.id = id;
+    public Quiz(Optional<Integer> userId, HashMap<String, ArrayList<String>> questionsAndOptions, ArrayList<Optional<String>> answers) {
         this.userId = userId;
-        this.questionsAndAnswers = questionsAndAnswers;
-
+        this.questionsAndOptions = questionsAndOptions;
+        this.answers = answers;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getUserId() {
+    public Optional<Integer> getUserId() {
         return userId;
     }
 
-    public HashMap<String, Optional<String>> getQuestionsAndAnswers() {
-        return questionsAndAnswers;
+    public HashMap<String, ArrayList<String>> getQuestionsAndOptions() {
+        return questionsAndOptions;
     }
 
-    public void setUserId(int userId) {
+    public ArrayList<Optional<String>> getAnswers() {
+        return answers;
+    }
+
+    public void setUserId(Optional<Integer> userId) {
         this.userId = userId;
     }
 
-    public void setQuestionsAndAnswers(HashMap<String, Optional<String>> questionsAndAnswers) {
-        this.questionsAndAnswers = questionsAndAnswers;
+    public void setQuestionsAndOptions(HashMap<String, ArrayList<String>> questionsAndOptions) {
+        this.questionsAndOptions = questionsAndOptions;
+    }
+
+    public void setAnswers(ArrayList<Optional<String>> answers) {
+        this.answers = answers;
     }
 
     @Override
@@ -49,20 +50,20 @@ public class Quiz {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Quiz quiz = (Quiz) o;
-        return id == quiz.id && userId == quiz.userId && Objects.equals(questionsAndAnswers, quiz.questionsAndAnswers);
+        return Objects.equals(userId, quiz.userId) && Objects.equals(questionsAndOptions, quiz.questionsAndOptions) && Objects.equals(answers, quiz.answers);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, userId, questionsAndAnswers);
+        return Objects.hash(userId, questionsAndOptions, answers);
     }
 
     @Override
     public String toString() {
         return "Quiz{" +
-                "id=" + id +
-                ", userId=" + userId +
-                ", questionsAndAnswers=" + questionsAndAnswers +
+                "userId=" + userId +
+                ", questionsAndOptions=" + questionsAndOptions +
+                ", answers=" + answers +
                 '}';
     }
 }

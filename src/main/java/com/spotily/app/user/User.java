@@ -9,12 +9,12 @@ public class User {
     private String username;
     private String password;
     private String email;
-//    private Playlist playlist;
+//  private Playlist playlist;
 
     public User(int id, String username, String email) {
         this.id = id;
         this.username = username;
-//        this.password = password;
+//      this.password = password;
         this.email = email;
     }
 

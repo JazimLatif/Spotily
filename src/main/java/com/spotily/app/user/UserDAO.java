@@ -1,7 +1,7 @@
 package com.spotily.app.user;
 
 import com.spotily.app.playlist.Playlist;
-
+import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 public interface UserDAO {

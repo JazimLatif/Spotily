@@ -1,79 +1,85 @@
 package com.spotily.app.playlist;
 
+import com.spotily.app.user.User;
+import org.springframework.data.relational.core.mapping.Table;
 import org.springframework.stereotype.Repository;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.lang.reflect.Array;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@Repository("postgres")
+@Repository
 public class PlaylistDataAccessService {
 
     private JdbcTemplate jdbcTemplate;
-//hello jason
-    public int makePlaylist(Playlist playlist){
 
-//         first need to create an empty playlist then use that id to connect it to song_id
-//         which is found by filtering by mood of song. Might be easier to remove song_id
-//         from playlist_songs and replace it with mood_id.
+    public PlaylistDataAccessService(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
+
+// insert returning id, will initially get max id rather than returning
+    public int makeNewPlaylist(int userId){
 
         String sql = """
-                WITH new_playlist AS (
-                    INSERT INTO playlists (user_id)
-                    VALUES (?)
-                    RETURNING id
-                )
-                
-                WITH mood_filter AS (
-                SELECT song_name, artist 
-                FROM songs
-                INNER JOIN options on option_mood=songs.mood 
-                WHERE mood='?';
-                )
-                
-                INSERT INTO playlist_songs (playlist_id, song_id)
-                VALUE (new_playlist, mood_filter);
-                     
+                INSERT INTO playlist (playlist_user)
+                VALUES (?);
                 """;
-        //
+
+        return jdbcTemplate.update(sql, userId);
 
 
-        return jdbcTemplate.update(
-                sql,
-                playlist.getId(),
-                playlist.getUserId(),
-                playlist.getSongs());
+    }
 
+    public int getNewestPlaylistId(){
+        String sql = """
+                SELECT id FROM playlist ORDER BY id DESC LIMIT 1;
+                """;
+        ArrayList<Integer> playlistIdArray = (ArrayList<Integer>) jdbcTemplate.query(sql, new PlaylistResultSetExtractor());
+        return playlistIdArray.get(0);
+    }
+
+    public int addToPlaylist(Integer songId, int playlistId){
+        String sql = """
+                INSERT INTO playlist_maker
+                (playlist_id, song_id)
+                VALUES (?, ?);
+                """;
+//        loop thru songIds in playlistservice and insert each into db with same playlist id passed above from makeplaylist
+        return jdbcTemplate.update(sql, songId, playlistId);
     }
 
     public List<Playlist> getAllPlaylists(){
 //        sql logic
         String sql = """ 
-                SELECT * FROM playlist_songs GROUP BY playlist_id;
+                SELECT * FROM playlist_maker GROUP BY playlist_id;
                 """;
 //        come back to this sql query...
 
         //                SELECT song_name, artist
         //                FROM songs
-        //                INNER JOIN playlist_songs
-        //                ON playlist_songs.song_id = songs.id
-        //                GROUP BY playlist_songs.playlist_id
+        //                INNER JOIN playlist_maker
+        //                ON playlist_maker.song_id = songs.id
+        //                GROUP BY playlist_maker.playlist_id
         List<Playlist> playlistList = jdbcTemplate.query(sql,  new PlaylistRowMapper());
 //        add the sql query results to list
         return playlistList;
     }
-
 //    get list of song ids that match the mood indicated by answer
     public ArrayList<Integer> getByMood(String answer){
 //        sql query - may be easier to add a mood tag to the answers/options rather than the code
         String sql = """
-                SELECT id FROM songs WHERE mood = ?;
+                SELECT DISTINCT songs.id 
+                FROM songs INNER JOIN options 
+                ON songs.mood = option_mood 
+                WHERE option_text = ?;
                 """;
-        ArrayList<Integer> songIdList = jdbcTemplate.queryForList(sql, answer);
+
+        //        ResultSet rs = jdbcTemplate.query(sql, answer);
 //        above needs work, get ids from the object map that the query returns
-        return songIdList;
+        return (ArrayList<Integer>) jdbcTemplate.query(sql, new PlaylistResultSetExtractor(), answer);
     }
 
     public int deletePlaylist(int id){ return 0;}
@@ -83,9 +89,9 @@ public class PlaylistDataAccessService {
                 
                 SELECT song_name, artist
                 FROM songs
-                INNER JOIN playlist_songs
-                ON playlist_songs.song_id = songs.id
-                WHERE playlist_songs.playlist_id = ?
+                INNER JOIN playlist_maker
+                ON playlist_maker.song_id = songs.id
+                WHERE playlist_maker.playlist_id = ?
                 
                 """;
 
@@ -100,3 +106,34 @@ public class PlaylistDataAccessService {
 //        return false;
 //    }
 }
+
+//    public int makePlaylist(ArrayList<Integer> playlist){
+//
+//
+//        String sql = """
+//                WITH new_playlist AS (
+//                INSERT INTO playlists (user_id)
+//                VALUES (?)
+//                RETURNING id
+//                )
+//                /*
+//                WITH mood_filter AS (
+//                SELECT id
+//                FROM songs
+//                INNER JOIN options on option_mood=songs.mood
+//                WHERE mood='?'
+//                )
+//                */
+//
+//                INSERT INTO playlist_maker (playlist_id, song_id)
+//                VALUE (new_playlist, mood_filter);
+//
+//                """;
+//
+//
+//        return jdbcTemplate.update(
+//                sql);
+////                playlist.getId(),
+////                playlist.getUserId(),
+////                playlist.getSongs().
+////                user.getUsermood());

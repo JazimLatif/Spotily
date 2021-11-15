@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(path="api/v1/spotily")
+@RequestMapping(path="api/v1/testspotily")
 public class UserController {
 
     private UserService userService;
@@ -19,15 +19,15 @@ public class UserController {
         userService.addNewUser(user);
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/delete/{id}")
     public void deleteUser(@PathVariable("id") int id) {
         userService.deleteUser(id);
     }
 
-    @PutMapping("{id}")
-    public void editUserAccountDetails(@PathVariable("id") int id, @RequestBody User user) {
-        userService.editUserAccountDetails(id, user);
-    }
+//    @PutMapping("/put/{id}")
+//    public void editUserAccountDetails(@PathVariable("id") int id, @RequestBody User user) {
+//        userService.editUserAccountDetails(id, user);
+//    }
 
     @GetMapping("{id}")
     public void getUserPlaylist(@PathVariable("id") int id) {

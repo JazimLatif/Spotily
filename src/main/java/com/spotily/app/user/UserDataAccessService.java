@@ -2,13 +2,16 @@ package com.spotily.app.user;
 
 import com.spotily.app.song.Song;
 import com.spotily.app.song.SongRowMapper;
+import org.springframework.context.annotation.Bean;
+import org.springframework.data.relational.core.mapping.Table;
+import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
-public class UserDataAccessService {
+public class UserDataAccessService  {
     JdbcTemplate jdbcTemplate;
 
     public int addNewUser(User user) {
