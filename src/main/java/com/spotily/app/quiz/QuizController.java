@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/quiz")
@@ -61,6 +62,28 @@ public class QuizController {
     public void submitQuizTest(@RequestBody Quiz quiz){
         quizService.submitQuiz(quiz);
     }
+
+//    tested in thunder client - successfully adds question and all options
+//    now also checks if user is an admin and doesn't add if not
+    @PostMapping("{id}/submit-question")
+    public void submitQuestionTest(@PathVariable("id") int userId, @RequestBody Question question){
+        quizService.addQuestion(question, userId);
+    }
+
+//    tested ub thunder client - working
+    @PutMapping("{userid}/update-question/{questionid}")
+    public void updateQuestionTest(@PathVariable("userid") int userId, @PathVariable("questionid") int qId, @RequestBody Question question){
+        quizService.updateQuestion(question, userId, qId);
+    }
+
+
+// tested in thunder client successfully
+    @PostMapping("/submitthemed/{tag}")
+    public void submitThemedQuizTest(@RequestBody Quiz quiz, @PathVariable("tag") int tag){ quizService.submitThemedQuiz(quiz, tag); }
+
+//    tested in thuder client - working
+    @GetMapping("/getthemed/{tag}")
+    public Quiz getThemedQuizTest(@PathVariable("tag") int tag){ return quizService.makeThemedQuiz(tag); }
 
 
 

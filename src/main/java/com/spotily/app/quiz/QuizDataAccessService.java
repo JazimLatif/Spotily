@@ -16,21 +16,7 @@ public class QuizDataAccessService {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public boolean submitQuiz(Quiz quiz){
-//        sql logic to add to db - completed quiz by user
-        return true;
-    }
-
-     public int updateQuiz(Map<String, String> questionsAndAnswers){
-        return 0;
-     }
-
-//     change this to a get random question and have the quiz service do putting the quiz together
-//    return and return type will change
      public ArrayList<String> getQuestionOptions(String question){
-// no longer having quizzes in database, just building out of questions
-
-//         below query gets the question text and options for a random question, but better to split up probs
          String sql = """
                  SELECT option_text 
                  FROM options JOIN questions ON questions.id = options.question_id 
@@ -38,13 +24,11 @@ public class QuizDataAccessService {
                  """;
 
          List<Map<String, Object>> options_list = jdbcTemplate.queryForList(sql, question);
-//         this standard kind of query returns the column heading and value as key value in map list
-//         so can extract however based on that
+
          ArrayList<String> options = new ArrayList<>();
          for (Map elem: options_list){
              options.add((String) elem.values().toArray()[0]);
          }
-//         above gets all the values but assumes the data is the way given from current sql query - single column
          return options;
      }
 
@@ -56,36 +40,82 @@ public class QuizDataAccessService {
         return question;
      }
 
-//    public Quiz getQuizInfoById(int id){
-//// note this is for getting the quiz just to display questions
-//        String sql = """
-//                 SELECT questions, options
-//                 FROM questions INNER JOIN options ON
-//                 questions.id = options.question_id
-//                 WHERE questions.quiz_id = ?
-//                 """;
-////        add logic to turn the query into a format that can be shown as the quiz questions
-////        probably not the existing quiz object, data types won't allow unless comma/some char separated options or something
-////         use sql info to add to hashmap...
-//        return ;
-//    }
+    public String getThemedQuestion(int theme){
+        String sql = """
+                SELECT question_text FROM questions WHERE question_theme = ? ORDER BY RANDOM () LIMIT 1;
+                """;
+        String question = (String) jdbcTemplate.queryForObject(sql, new Object[] {theme}, String.class);
+        return question;
+    }
+
+     public int getNewQuestionId(){
+         String sql = """
+                SELECT questions.id FROM questions ORDER BY questions.id DESC LIMIT 1;
+                """;
+         int questionId = (int) jdbcTemplate.queryForObject(sql, new Object[] {}, Integer.class);
+         return questionId;
+     }
+
+     public int addQuestion(String question){
+        String sql = """
+                INSERT INTO 
+                questions (question_text) 
+                VALUES (?);
+                """;
+        return jdbcTemplate.update(sql, question);
+     }
+
+    public int addThemedQuestion(String question, Integer theme){
+        String sql = """
+                INSERT INTO 
+                questions (question_text, question_theme) 
+                VALUES (?, ?);
+                """;
+        return jdbcTemplate.update(sql, question, theme);
+    }
+
+    public ArrayList<Integer> getAdmin() {
+        String sql = """
+                SELECT users.id
+                FROM users 
+                WHERE users.admin = 'true';
+                """;
+        return (ArrayList<Integer>) jdbcTemplate.query(sql, new QuizResultSetExtractor());
+    }
+
+    public int addOption(int questionId, String option, String mood){
+        String sql = """
+                INSERT INTO 
+                options (question_id, option_text, option_mood) 
+                VALUES (?, ?, ?);
+                """;
+        return jdbcTemplate.update(sql, questionId, option, mood);
+    }
+
+    public ArrayList<Integer> getAllQuestionIds(){
+        String sql = """
+                SELECT id FROM questions;
+                """;
+        return (ArrayList<Integer>) jdbcTemplate.query(sql, new QuizResultSetExtractor());
+    }
+
+    public int updateQuestion(String questionText, int questionId){
+        String sql = """
+                UPDATE questions SET question_text = ?
+                WHERE id = ?;
+                """;
+        return jdbcTemplate.update(sql, questionText, questionId);
+    }
+
+    public int deleteOptionsByQuestionId(int questionId){
+        String sql = """
+                DELETE FROM options WHERE question_id = ?;
+                """;
+        Object[] id = new Object[]{questionId};
+        return jdbcTemplate.update(sql, id);
+    }
+
 
 
 }
 
-//     public Quiz getQuizById(int id){
-//// note this is for getting a quiz that user has completed, to pass to the playlist maker
-////         so will need some extra work and validation
-////         have the user id feed into this, will be called from the point of submit so..
-//         String sql = """
-//                 SELECT questions, user_answers
-//                 FROM questions INNER JOIN ON
-//                 questions.id = options.question_id
-//                 WHERE questions.quiz_id = ?
-//                 """;
-////         above sql needs work
-//         HashMap<String, Optional<String>> quizMap = new HashMap<String, Optional<String>>();
-////         use sql info to add to hashmap...
-////         need to get userid from sql
-//         return new Quiz(id, 0, quizMap);
-//     }
