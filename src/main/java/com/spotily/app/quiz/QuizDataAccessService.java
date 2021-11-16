@@ -92,5 +92,30 @@ public class QuizDataAccessService {
         return jdbcTemplate.update(sql, questionId, option, mood);
     }
 
+    public ArrayList<Integer> getAllQuestionIds(){
+        String sql = """
+                SELECT id FROM questions;
+                """;
+        return (ArrayList<Integer>) jdbcTemplate.query(sql, new QuizResultSetExtractor());
+    }
+
+    public int updateQuestion(String questionText, int questionId){
+        String sql = """
+                UPDATE questions SET question_text = ?
+                WHERE id = ?;
+                """;
+        return jdbcTemplate.update(sql, questionText, questionId);
+    }
+
+    public int deleteOptionsByQuestionId(int questionId){
+        String sql = """
+                DELETE FROM options WHERE question_id = ?;
+                """;
+        Object[] id = new Object[]{questionId};
+        return jdbcTemplate.update(sql, id);
+    }
+
+
+
 }
 

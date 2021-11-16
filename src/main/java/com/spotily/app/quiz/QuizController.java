@@ -66,10 +66,16 @@ public class QuizController {
 //    tested in thunder client - successfully adds question and all options
 //    now also checks if user is an admin and doesn't add if not
     @PostMapping("{id}/submit-question")
-    public void submitQuestionTest(@PathVariable("id") int id, @RequestBody Question question){
-        quizService.addQuestion(question, id);
+    public void submitQuestionTest(@PathVariable("id") int userId, @RequestBody Question question){
+        quizService.addQuestion(question, userId);
     }
-//    need to adjust so that
+
+//    tested ub thunder client - working
+    @PutMapping("{userid}/update-question/{questionid}")
+    public void updateQuestionTest(@PathVariable("userid") int userId, @PathVariable("questionid") int qId, @RequestBody Question question){
+        quizService.updateQuestion(question, userId, qId);
+    }
+
 
 // tested in thunder client successfully
     @PostMapping("/submitthemed/{tag}")

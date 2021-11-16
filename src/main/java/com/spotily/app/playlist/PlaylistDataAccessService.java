@@ -56,7 +56,7 @@ public class PlaylistDataAccessService {
         //                INNER JOIN playlist_maker
         //                ON playlist_maker.song_id = songs.id
         //                GROUP BY playlist_maker.playlist_id
-        List<Playlist> playlistList = jdbcTemplate.query(sql,  new PlaylistRowMapper());
+        List<Playlist> playlistList = jdbcTemplate.query(sql, new PlaylistRowMapper());
 //        add the sql query results to list
         return playlistList;
     }

@@ -148,4 +148,29 @@ public class QuizService {
             quizDataAccessService.addOption(newQId, kvSet.getKey(), kvSet.getValue());
         }
     }
+
+    public void updateQuestion(Question question, int userId, int questionId){
+//        check user is admin
+        ArrayList<Integer> adminIds = quizDataAccessService.getAdmin();
+        if (!adminIds.contains(userId)){
+            throw new UnsupportedOperationException("Only Admins are allowed to update questions");
+        }
+//      check question exists
+        ArrayList<Integer> questionIds = quizDataAccessService.getAllQuestionIds();
+        if (!questionIds.contains(questionId)){
+            throw new ResourceNotFound("Question with that ID not found");
+        }
+
+//        update the question
+        quizDataAccessService.updateQuestion(question.getText(), questionId);
+
+//        update the options - clear existing options where the question id matches
+        quizDataAccessService.deleteOptionsByQuestionId(questionId);
+
+//        update the options - add each option to matching question id
+        HashMap<String, String> optionsAndMoods = question.getOptionsAndMoods();
+        for(HashMap.Entry<String, String> kvSet : optionsAndMoods.entrySet()){
+            quizDataAccessService.addOption(questionId, kvSet.getKey(), kvSet.getValue());
+        }
+    }
 }
