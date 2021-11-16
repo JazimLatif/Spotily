@@ -152,8 +152,12 @@ public void makePlaylist(ArrayList<String> answers, int userId){
             while(songid == randomSong && randomSong == 0 && checkAllSongs.contains(randomSong)){
                 randomSong = new Random().nextInt(songsWithMood.size());
             }
-            playlistDataAccessService.addToPlaylist(playlistid, randomSong);
-            playlistDataAccessService.removeSongFromPlaylist(playlistid, songid);
+            if (songid != randomSong && randomSong != 0 && !checkAllSongs.contains(randomSong))  {
+                playlistDataAccessService.addToPlaylist(playlistid, randomSong);
+                playlistDataAccessService.removeSongFromPlaylist(playlistid, songid);
+            } else {
+                throw new ResourceNotFound("Please try again");
+            }
         }
 
     }
