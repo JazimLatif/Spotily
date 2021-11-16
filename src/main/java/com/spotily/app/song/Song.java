@@ -5,22 +5,14 @@ import java.util.Objects;
 public class Song {
     private int id;
     private String mood;
-    private String songname;
+    private String songName;
     private String artist;
 
-    public Song(int id, String mood, String songname, String artist) {
-        this.id = id;
+
+    public Song( String mood, String songName, String artist) {
         this.mood = mood;
-        this.songname = songname;
+        this.songName = songName;
         this.artist = artist;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getMood() {
@@ -31,12 +23,12 @@ public class Song {
         this.mood = mood;
     }
 
-    public String getSongname() {
-        return songname;
+    public String getSongName() {
+        return songName;
     }
 
-    public void setSongname(String songname) {
-        this.songname = songname;
+    public void setSongName(String songName) {
+        this.songName = songName;
     }
 
     public String getArtist() {
@@ -52,12 +44,12 @@ public class Song {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Song song = (Song) o;
-        return id == song.id && Objects.equals(mood, song.mood) && Objects.equals(songname, song.songname) && Objects.equals(artist, song.artist);
+        return id == song.id && Objects.equals(mood, song.mood) && Objects.equals(songName, song.songName) && Objects.equals(artist, song.artist);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, mood, songname, artist);
+        return Objects.hash(id, mood, songName, artist);
     }
 
     @Override
@@ -65,7 +57,7 @@ public class Song {
         return "Song{" +
                 "id=" + id +
                 ", mood='" + mood + '\'' +
-                ", songname='" + songname + '\'' +
+                ", songName='" + songName + '\'' +
                 ", artist='" + artist + '\'' +
                 '}';
     }

@@ -1,12 +1,12 @@
 package com.spotily.app.playlist;
 
 import com.spotily.app.exception.ResourceNotFound;
+import com.spotily.app.playlist.filterplaylist.FilterPlaylist;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.Random;
 
 @Service
@@ -77,15 +77,22 @@ public class PlaylistService {
         return songIds;
     }
 
-    public List<Playlist> getAllPlaylists(){return playlistDataAccessService.getAllPlaylists();}
 
-    public Playlist selectPlaylistById(int id) {
-        return playlistDataAccessService.selectPlaylistbyId(id)
-                .orElseThrow(() -> new ResourceNotFound("Playlist " + id + "does not exist"));
+    public List<FilterPlaylist> getAllPlaylists(){
+        return playlistDataAccessService.getAllPlaylists();
+    }
+
+    public List<FilterPlaylist> selectPlaylistById(int id) {
+        List<FilterPlaylist> playlistOptional = playlistDataAccessService.selectPlaylistbyId(id);
+        if(playlistOptional.isEmpty()){
+            throw new ResourceNotFound("Playlist " + id + "does not exist");
+        }
+        return playlistDataAccessService.selectPlaylistbyId(id);
+
     }
 
     public void deletePlaylist(int id){
-        Optional<Playlist> playlistOptional = playlistDataAccessService.selectPlaylistbyId(id);
+        List<FilterPlaylist> playlistOptional = playlistDataAccessService.selectPlaylistbyId(id);
         if(playlistOptional.isEmpty()){
             throw new ResourceNotFound("Playlist " + id + "does not exist");
         }

@@ -1,41 +1,54 @@
 package com.spotily.app.song;
 
-import com.spotily.app.exception.ResourceNotFound;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class SongService {
 
-    private SongDAO songDAO;
+    private SongDataAccessService songDataAccessService;
 
-//    public SongService(SongDAO songDAO) {
-//        this.songDAO = songDAO;
-//    }
-
-//    public void addNewSong(Song song) {
-//        songDAO.addNewSong(song);
-//    }
-
-    public void deleteSong(int id) {
-        Optional<Song> songOptional = songDAO.deleteSong(id);
-
-        if(songOptional.isEmpty()){
-            throw new ResourceNotFound("Song not found, field can't be empty");
-        }
-        songDAO.deleteSong(id);
+    @Autowired
+    public SongService(SongDataAccessService songDataAccessService) {
+        this.songDataAccessService = songDataAccessService;
     }
 
-    public void editSongDetails(int id, Song song) {
-
-        Optional<Song> songOptional = songDAO.editSongDetails(id, song);
-
-        if (songOptional.isEmpty()){
-            throw new ResourceNotFound("Song not found, field can't be empty");
+    public void addNewSong(int adminId, Song song) {
+        ArrayList<Integer> AdminIds = songDataAccessService.getAdmin();
+        if (AdminIds.contains(adminId)) {
+            songDataAccessService.addNewSong(song);
+        } else {
+            throw new UnsupportedOperationException("Only Admins are allowed to add songs");
         }
-        songDAO.editSongDetails(id, song);
+    }
+
+    public void deleteSong(int adminId, int id) {
+        ArrayList<Integer> AdminIds = songDataAccessService.getAdmin();
+        if (AdminIds.contains(adminId)) {
+            songDataAccessService.deleteSong(id);
+        } else {
+            throw new UnsupportedOperationException("Only Admins are allowed to delete songs");
+        }
+    }
+
+    public void editSongDetails(int adminId, int id, Song song) {
+        ArrayList<Integer> AdminIds = songDataAccessService.getAdmin();
+        if (AdminIds.contains(adminId)) {
+            songDataAccessService.editSongDetails(id, song);
+        } else {
+            throw new UnsupportedOperationException("Only Admins are allowed to delete songs");
+        }
+    }
+
+    public List<? extends Object> showSongs(int adminId, Song song) {
+        ArrayList<Integer> AdminIds = songDataAccessService.getAdmin();
+        if (AdminIds.contains(adminId)) {
+            return songDataAccessService.showAdminSongs(song);
+        } else  {
+            return songDataAccessService.showUserSongs(song);
+        }
     }
 }

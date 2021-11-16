@@ -1,11 +1,13 @@
 package com.spotily.app.song;
 
-import org.springframework.data.relational.core.mapping.Table;
-import org.springframework.data.repository.NoRepositoryBean;
+import com.spotily.app.song.UserSong.UserSong;
+import com.spotily.app.song.UserSong.UserSongRowMapper;
+import com.spotily.app.user.UserResultSetExtractor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
+import java.util.ArrayList;
+import java.util.List;
 
 @Repository
 public class SongDataAccessService{
@@ -19,15 +21,24 @@ public class SongDataAccessService{
     public int addNewSong(Song song) {
         // admin use
         String sql = """
-              INSERT INTO song(mood, artist, song_name)
+              INSERT INTO songs(mood, artist, song_name)
               VALUES(?, ?, ?);
                 """;
         return jdbcTemplate.update(
                 sql,
                 song.getMood(),
                 song.getArtist(),
-                song.getSongname()
+                song.getSongName()
         );
+    }
+
+    public ArrayList<Integer> getAdmin() {
+        String sql = """
+                SELECT users.id
+                FROM users
+                WHERE users.admin = 'true';
+                """;
+        return (ArrayList<Integer>) jdbcTemplate.query(sql, new UserResultSetExtractor());
     }
 
     public int deleteSong(int id) {
@@ -44,14 +55,27 @@ public class SongDataAccessService{
                 UPDATE song
                 SET mood = ?, artist = ?, song_name = ?
                 WHERE id = ?
-                  """;
+                """;
         return jdbcTemplate.update(
                 sql,
                 song.getMood(),
                 song.getArtist(),
-                song.getSongname(),
+                song.getSongName(),
                 id
         );
     }
 
+    public List<Song> showAdminSongs(Song song) {
+        String sql= """
+                SELECT mood,song_name,artist FROM songs;
+                """;
+        return jdbcTemplate.query(sql, new SongRowMapper());
+    }
+
+    public List<UserSong> showUserSongs(Song song) {
+        String sql = """
+                SELECT song_name, artist FROM songs;
+                """;
+        return jdbcTemplate.query(sql, new UserSongRowMapper());
+    }
 }
