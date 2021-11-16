@@ -1,6 +1,7 @@
 package com.spotily.app.quiz;
 
 import com.spotily.app.playlist.PlaylistService;
+import com.spotily.app.playlist.filterplaylist.FilterPlaylist;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -8,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Filter;
 
 @RestController
 @RequestMapping("/api/quiz")
@@ -70,7 +72,7 @@ public class QuizController {
         quizService.addQuestion(question, userId);
     }
 
-//    tested ub thunder client - working
+//    tested in thunder client - working
     @PutMapping("{userid}/update-question/{questionid}")
     public void updateQuestionTest(@PathVariable("userid") int userId, @PathVariable("questionid") int qId, @RequestBody Question question){
         quizService.updateQuestion(question, userId, qId);
@@ -85,6 +87,17 @@ public class QuizController {
     @GetMapping("/getthemed/{tag}")
     public Quiz getThemedQuizTest(@PathVariable("tag") int tag){ return quizService.makeThemedQuiz(tag); }
 
+// tested in thunderclient - working
+    @PostMapping("/submitthemedreturnplaylist/{tag}")
+    public List<FilterPlaylist> submitThemedQuizReturnPlaylistTest(@RequestBody Quiz quiz, @PathVariable("tag") int tag){
+        quizService.submitThemedQuiz(quiz, tag);
+        return quizService.returnLatestPlaylist();
+    }
 
-
+//    tested in thunderclient - working
+    @PostMapping("/submitReturnPlaylistTest")
+    public List<FilterPlaylist> submitQuizReturnPlaylistTest(@RequestBody Quiz quiz){
+        quizService.submitQuiz(quiz);
+        return quizService.returnLatestPlaylist();
+    }
 }

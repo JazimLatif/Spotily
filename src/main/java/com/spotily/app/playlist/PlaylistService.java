@@ -55,7 +55,7 @@ public class PlaylistService {
         playlistDataAccessService.makeNewPlaylist(userId);
         int newPlaylistId = playlistDataAccessService.getNewestPlaylistId();
         for (int i = 0; i<playlist.size(); i++){
-            System.out.println(Integer.toString(playlist.get(i)) +" "+  Integer.toString(newPlaylistId));
+//            System.out.println(Integer.toString(playlist.get(i)) +" "+  Integer.toString(newPlaylistId));
             playlistDataAccessService.addToPlaylist(newPlaylistId, playlist.get(i));
         }
 

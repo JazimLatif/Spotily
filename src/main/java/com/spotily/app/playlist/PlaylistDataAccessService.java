@@ -83,9 +83,6 @@ public class PlaylistDataAccessService {
         return (ArrayList<Integer>) jdbcTemplate.query(sql, new PlaylistResultSetExtractor(), answer, theme);
     }
 
-    public int deletePlaylist(int id){ return 0;}
-
-
 
     public int deletePlaylist(int id){
         String sql = """

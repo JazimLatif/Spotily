@@ -1,7 +1,9 @@
 package com.spotily.app.quiz;
 
+import com.spotily.app.playlist.Playlist;
 import com.spotily.app.playlist.PlaylistDataAccessService;
 import com.spotily.app.playlist.PlaylistService;
+import com.spotily.app.playlist.filterplaylist.FilterPlaylist;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.spotily.app.exception.ResourceNotFound;
@@ -24,15 +26,19 @@ public class QuizService {
     }
 
     public String getRandomQ(){
-        return quizDataAccessService.getRandomQuestion();
+        return quizDataAccessService.getRandomQuestion().orElseThrow(()-> new ResourceNotFound("Could not find a question"));
     }
 
     public String getThemedQ(int theme){
-        return quizDataAccessService.getThemedQuestion(theme);
+        return quizDataAccessService.getThemedQuestion(theme).orElseThrow(()-> new ResourceNotFound("No questions found with that theme"));
     }
 
     public ArrayList<String> getQOptions(String question){
-        return quizDataAccessService.getQuestionOptions(question);
+        ArrayList<String> options = quizDataAccessService.getQuestionOptions(question);
+        if (options.size()==0){
+            throw new ResourceNotFound("No options for that questions, an admin can add them");
+        }
+        return options;
     }
 
     public HashMap<String, ArrayList<String>> makeRandomQuestionOptionsMap(){
@@ -128,8 +134,11 @@ public class QuizService {
     }
 
     public void addQuestion(Question questionObj, int id){
-        ArrayList<Integer> adminIds = quizDataAccessService.getAdmin();
-        if (!adminIds.contains(id)){
+        Optional<ArrayList<Integer>> adminIds = quizDataAccessService.getAdmin();
+        if (adminIds.isEmpty()){
+            throw new ResourceNotFound("No admin users available, unable to submit");
+        }
+        else if (!adminIds.get().contains(id)){
             throw new UnsupportedOperationException("Only Admins are allowed to add questions");
         }
         String question = questionObj.getText();
@@ -142,22 +151,31 @@ public class QuizService {
                 quizDataAccessService.addQuestion(question);
             }
 //      get latest question id
-        int newQId = quizDataAccessService.getNewQuestionId();
+        Optional<Integer> newQId = quizDataAccessService.getNewQuestionId();
+            if (newQId.isEmpty()){
+                throw new ResourceNotFound("Error, question not found");
+            }
 //        and add each option to the q with that id
         for(HashMap.Entry<String, String> kvSet : optionsAndMoods.entrySet()){
-            quizDataAccessService.addOption(newQId, kvSet.getKey(), kvSet.getValue());
+            quizDataAccessService.addOption(newQId.get(), kvSet.getKey(), kvSet.getValue());
         }
     }
 
     public void updateQuestion(Question question, int userId, int questionId){
 //        check user is admin
-        ArrayList<Integer> adminIds = quizDataAccessService.getAdmin();
-        if (!adminIds.contains(userId)){
+        Optional<ArrayList<Integer>> adminIds = quizDataAccessService.getAdmin();
+        if (adminIds.isEmpty()){
+            throw new ResourceNotFound("No admin users available, unable to submit");
+        }
+        else if (!adminIds.get().contains(userId)){
             throw new UnsupportedOperationException("Only Admins are allowed to update questions");
         }
 //      check question exists
-        ArrayList<Integer> questionIds = quizDataAccessService.getAllQuestionIds();
-        if (!questionIds.contains(questionId)){
+        Optional<ArrayList<Integer>> questionIds = quizDataAccessService.getAllQuestionIds();
+        if (questionIds.isEmpty()){
+            throw new ResourceNotFound("No questions found");
+        }
+        else if (!questionIds.get().contains(questionId)){
             throw new ResourceNotFound("Question with that ID not found");
         }
 
@@ -173,4 +191,9 @@ public class QuizService {
             quizDataAccessService.addOption(questionId, kvSet.getKey(), kvSet.getValue());
         }
     }
+
+    public List<FilterPlaylist> returnLatestPlaylist(){
+        return playlistService.selectPlaylistById(playlistService.getMaxPlaylistIdTest());
+    }
+
 }

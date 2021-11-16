@@ -32,28 +32,28 @@ public class QuizDataAccessService {
          return options;
      }
 
-     public String getRandomQuestion(){
+     public Optional<String> getRandomQuestion(){
         String sql = """
                 SELECT question_text FROM questions ORDER BY RANDOM () LIMIT 1;
                 """;
         String question = (String) jdbcTemplate.queryForObject(sql, new Object[] {}, String.class);
-        return question;
+        return Optional.ofNullable(question);
      }
 
-    public String getThemedQuestion(int theme){
+    public Optional<String> getThemedQuestion(int theme){
         String sql = """
                 SELECT question_text FROM questions WHERE question_theme = ? ORDER BY RANDOM () LIMIT 1;
                 """;
         String question = (String) jdbcTemplate.queryForObject(sql, new Object[] {theme}, String.class);
-        return question;
+        return Optional.ofNullable(question);
     }
 
-     public int getNewQuestionId(){
+     public Optional<Integer> getNewQuestionId(){
          String sql = """
                 SELECT questions.id FROM questions ORDER BY questions.id DESC LIMIT 1;
                 """;
          int questionId = (int) jdbcTemplate.queryForObject(sql, new Object[] {}, Integer.class);
-         return questionId;
+         return Optional.ofNullable(questionId);
      }
 
      public int addQuestion(String question){
@@ -74,13 +74,13 @@ public class QuizDataAccessService {
         return jdbcTemplate.update(sql, question, theme);
     }
 
-    public ArrayList<Integer> getAdmin() {
+    public Optional<ArrayList<Integer>> getAdmin() {
         String sql = """
                 SELECT users.id
                 FROM users 
                 WHERE users.admin = 'true';
                 """;
-        return (ArrayList<Integer>) jdbcTemplate.query(sql, new QuizResultSetExtractor());
+        return (Optional<ArrayList<Integer>>) jdbcTemplate.query(sql, new QuizResultSetExtractor());
     }
 
     public int addOption(int questionId, String option, String mood){
@@ -92,11 +92,11 @@ public class QuizDataAccessService {
         return jdbcTemplate.update(sql, questionId, option, mood);
     }
 
-    public ArrayList<Integer> getAllQuestionIds(){
+    public Optional<ArrayList<Integer>> getAllQuestionIds(){
         String sql = """
                 SELECT id FROM questions;
                 """;
-        return (ArrayList<Integer>) jdbcTemplate.query(sql, new QuizResultSetExtractor());
+        return (Optional<ArrayList<Integer>>) jdbcTemplate.query(sql, new QuizResultSetExtractor());
     }
 
     public int updateQuestion(String questionText, int questionId){
