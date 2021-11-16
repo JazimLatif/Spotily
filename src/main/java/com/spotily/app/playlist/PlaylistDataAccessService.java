@@ -1,12 +1,14 @@
 package com.spotily.app.playlist;
 
 import com.spotily.app.playlist.filterplaylist.FilterPlaylist;
+import com.spotily.app.playlist.filterplaylist.FilterPlaylistResultSetExtractor;
 import com.spotily.app.playlist.filterplaylist.FilterPlaylistRowMapper;
 import org.springframework.stereotype.Repository;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Repository
@@ -83,10 +85,6 @@ public class PlaylistDataAccessService {
         return (ArrayList<Integer>) jdbcTemplate.query(sql, new PlaylistResultSetExtractor(), answer, theme);
     }
 
-    public int deletePlaylist(int id){ return 0;}
-
-
-
     public int deletePlaylist(int id){
         String sql = """
                 DELETE FROM playlist_maker
@@ -118,6 +116,51 @@ public class PlaylistDataAccessService {
         return jdbcTemplate.query(sql, new FilterPlaylistRowMapper(), id)
                 .stream()
                 .collect(Collectors.toList());
+    }
+
+    public Optional<Playlist> checkIfUserHasPlaylist(int id){
+        String sql = """
+                
+                SELECT *
+                FROM playlist
+                INNER JOIN users
+                ON playlist.playlist_user = users.id
+                WHERE users.id = ?
+                
+                """;
+
+        return jdbcTemplate.query(sql, new PlaylistRowMapper(), id)
+                .stream()
+                .findFirst();
+    }
+
+
+    public int removeSongFromPlaylist(int playlistid, int songid){
+        String sql = """
+                DELETE FROM playlist_maker
+                WHERE playlist_id = ? AND song_id = ?
+                """;
+        return jdbcTemplate.update(sql, playlistid, songid);
+    }
+
+    public ArrayList<Integer> checkIfSongIsInPlaylist (int id, int songid){
+        String sql = """
+                SELECT song_id
+                FROM playlist_maker
+                WHERE playlist_id = ? AND song_id = ?;
+                
+                """;
+        return (ArrayList<Integer>)jdbcTemplate.query(sql, new FilterPlaylistResultSetExtractor(), id, songid);
+    }
+
+    public ArrayList<Integer> checkAllSongInPlaylist (int id){
+        String sql = """
+                SELECT song_id
+                FROM playlist_maker
+                WHERE playlist_id = ?;
+                
+                """;
+        return (ArrayList<Integer>)jdbcTemplate.query(sql, new FilterPlaylistResultSetExtractor(), id);
     }
 
 }

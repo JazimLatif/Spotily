@@ -1,5 +1,6 @@
 package com.spotily.app.song;
 
+import com.spotily.app.exception.ResourceNotFound;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -50,5 +51,13 @@ public class SongService {
         } else  {
             return songDataAccessService.showUserSongs(song);
         }
+    }
+
+    public Object getSongMood(int id){
+        Object songMood = songDataAccessService.getSongMood(id);
+        if(songMood.equals(null)){
+            throw new ResourceNotFound("Song" + id + "doesn't exist");
+        }
+        return songMood;
     }
 }

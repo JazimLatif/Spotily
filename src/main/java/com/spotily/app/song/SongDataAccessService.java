@@ -78,4 +78,14 @@ public class SongDataAccessService{
                 """;
         return jdbcTemplate.query(sql, new UserSongRowMapper());
     }
+
+    public Object getSongMood(int id){
+        String sql = """
+                SELECT mood
+                FROM songs
+                WHERE id = ?
+                """;
+        return jdbcTemplate.query(sql, new SongResultSetExtractor(), id);
+
+    }
 }

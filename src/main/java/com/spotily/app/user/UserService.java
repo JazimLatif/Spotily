@@ -1,7 +1,10 @@
 package com.spotily.app.user;
 
+import com.spotily.app.exception.ResourceNotFound;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 
 @Service
@@ -34,5 +37,7 @@ public class UserService {
 
         userDAO.editUserAccountDetails(id, user);
     }
+
+
 
 }

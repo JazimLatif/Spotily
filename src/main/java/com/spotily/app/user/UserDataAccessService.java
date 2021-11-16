@@ -2,13 +2,11 @@ package com.spotily.app.user;
 
 //import com.spotily.app.song.Song;
 //import com.spotily.app.song.SongRowMapper;
-import org.springframework.context.annotation.Bean;
-import org.springframework.data.relational.core.mapping.Table;
-import org.springframework.data.repository.NoRepositoryBean;
+import com.spotily.app.user.userWithID.UserRowMapper;
+import com.spotily.app.user.userWithID.UserWithID;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -64,6 +62,18 @@ public class UserDataAccessService implements UserDAO {
                 user.getEmail(),
                 id
         );
+    }
+
+    public Optional<UserWithID> checkUserExists(int id){
+        String sql = """
+                SELECT *
+                FROM users
+                WHERE id = ?;
+                
+                """;
+        return jdbcTemplate.query(sql, new UserRowMapper(), id)
+                .stream()
+                .findFirst();
     }
 
 //    public List<Song> getUserPlaylist(int id) {
