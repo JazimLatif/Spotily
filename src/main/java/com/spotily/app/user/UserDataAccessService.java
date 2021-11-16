@@ -9,10 +9,15 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class UserDataAccessService  {
-    JdbcTemplate jdbcTemplate;
+    private JdbcTemplate jdbcTemplate;
+
+    public UserDataAccessService(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     public int addNewUser(User user) {
         String sql = """
@@ -58,5 +63,17 @@ public class UserDataAccessService  {
                 """;
         return jdbcTemplate.query(sql,new SongRowMapper(),id);
 
+    }
+
+    public Optional<User> checkUserExists(int id){
+        String sql = """
+                SELECT *
+                FROM users
+                WHERE id = ?;
+                
+                """;
+        return jdbcTemplate.query(sql, new UserRowMapper(), id)
+                .stream()
+                .findFirst();
     }
 }

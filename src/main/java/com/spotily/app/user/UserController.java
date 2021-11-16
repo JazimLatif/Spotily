@@ -1,7 +1,10 @@
 package com.spotily.app.user;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/user")
@@ -32,6 +35,11 @@ public class UserController {
     @GetMapping("{id}")
     public void getUserPlaylist(@PathVariable("id") int id) {
         userService.getUserPlaylist(id);
+    }
+
+    @GetMapping("/user/{id}")
+    public Optional<User> checkIfUserExists(@PathVariable("id") int id){
+        return userService.checkIfUserExists(id);
     }
 
 }

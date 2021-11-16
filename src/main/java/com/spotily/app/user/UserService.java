@@ -48,4 +48,13 @@ public class UserService {
         userDataAccessService.getUserPlaylist(id);
     }
 
+    public Optional<User> checkIfUserExists (int id){
+        Optional<User> optionalUser = userDataAccessService.checkUserExists(id);
+        if (optionalUser.isEmpty()){
+            throw new ResourceNotFound("User" + id + "doesn't exist");
+        }
+       return userDataAccessService.checkUserExists(id);
+
+    }
+
 }

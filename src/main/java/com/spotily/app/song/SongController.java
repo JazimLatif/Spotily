@@ -3,6 +3,9 @@ package com.spotily.app.song;
 import com.spotily.app.user.User;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/api/song")
 public class SongController {
@@ -28,4 +31,8 @@ public class SongController {
         songService.editSongDetails(id, song);
     }
 
+    @GetMapping("/mood/{id}")
+    public Object getSongMood(@PathVariable("id") int id){
+        return songService.getSongMood(id);
+    }
 }

@@ -1,14 +1,12 @@
 package com.spotily.app.quiz;
 
+import com.spotily.app.exception.ResourceNotFound;
 import com.spotily.app.playlist.PlaylistDataAccessService;
 import com.spotily.app.playlist.PlaylistService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -52,13 +50,21 @@ public class QuizService {
                 Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
                 Optional.empty()
         )));
-        for (int i=0; i<5; i++){
+
+
+
+        if (fullQuiz == null){
+            throw new ResourceNotFound("Error: quiz couldn't be created");
+
+        } else {
+            for (int i = 0; i < 5; i++) {
 //            add the option map from method to the quiz hashmap
-            HashMap<String, ArrayList<String>> questionMap = makeRandomQuestionOptionsMap();
-            HashMap<String, ArrayList<String>> currentQuestions = fullQuiz.getQuestionsAndOptions();
-            HashMap<String, ArrayList<String>> newOptions = makeRandomQuestionOptionsMap();
-            currentQuestions.put(newOptions.keySet().stream().findFirst().get(), newOptions.values().stream().findFirst().get());
+                HashMap<String, ArrayList<String>> questionMap = makeRandomQuestionOptionsMap();
+                HashMap<String, ArrayList<String>> currentQuestions = fullQuiz.getQuestionsAndOptions();
+                HashMap<String, ArrayList<String>> newOptions = makeRandomQuestionOptionsMap();
+                currentQuestions.put(newOptions.keySet().stream().findFirst().get(), newOptions.values().stream().findFirst().get());
 //             could also add optional to arraylist -hardcoded for now
+            }
         }
         return fullQuiz;
     }
@@ -77,6 +83,8 @@ public class QuizService {
         for (Optional<String> ans: quiz.getAnswers()){
             if (ans.isPresent()){
                 answersGiven.add(ans.get());
+            } else if(ans.isEmpty()){
+                throw new ResourceNotFound("Error: please select an answer");
             }
             else{
                 return;
@@ -85,6 +93,8 @@ public class QuizService {
         }
         if (userId.isPresent()){
             playlistService.makePlaylist( answersGiven, userId.get());
+        } else if (userId.isEmpty()){
+            throw new ResourceNotFound("Error: please sign in");
         }
         else {
 //            placeholder here but need to handle as error

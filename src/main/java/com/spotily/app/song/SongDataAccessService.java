@@ -5,6 +5,7 @@ import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -53,5 +54,15 @@ public class SongDataAccessService{
                 id
         );
     }
+
+   public Object getSongMood(int id){
+        String sql = """
+                SELECT mood
+                FROM songs
+                WHERE id = ?
+                """;
+        return jdbcTemplate.query(sql, new SongResultSetExtractor(), id);
+
+   }
 
 }

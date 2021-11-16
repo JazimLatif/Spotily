@@ -1,6 +1,6 @@
 package com.spotily.app.user;
 
-import org.springframework.jdbc.core.JdbcTemplate;
+
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
