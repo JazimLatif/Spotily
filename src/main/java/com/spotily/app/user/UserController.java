@@ -34,9 +34,4 @@ public class UserController {
         userService.editUserAccountDetails(id, user);
     }
 
-//    @GetMapping("{id}")
-//    public void getUserPlaylist(@PathVariable("id") int id) {
-//        userService.getUserPlaylist(id);
-//    }
-
 }

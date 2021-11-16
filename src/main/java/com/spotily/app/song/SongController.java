@@ -19,8 +19,6 @@ public class SongController {
     @GetMapping("/showSongs/{adminId}")
     public List<Song> showSongs(@PathVariable("adminId") int adminId, Song song){
         return (List<Song>) songService.showSongs(adminId, song);
-
-
     }
 
     @PostMapping("addSong/{adminId}")
