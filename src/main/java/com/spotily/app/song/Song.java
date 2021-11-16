@@ -8,19 +8,11 @@ public class Song {
     private String songName;
     private String artist;
 
-    public Song(int id, String mood, String songName, String artist) {
-        this.id = id;
+
+    public Song( String mood, String songName, String artist) {
         this.mood = mood;
         this.songName = songName;
         this.artist = artist;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getMood() {

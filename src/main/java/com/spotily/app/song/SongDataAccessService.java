@@ -1,13 +1,13 @@
 package com.spotily.app.song;
 
+import com.spotily.app.song.UserSong.UserSong;
+import com.spotily.app.song.UserSong.UserSongRowMapper;
 import com.spotily.app.user.UserResultSetExtractor;
-import org.springframework.data.relational.core.mapping.Table;
-import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
-import java.util.Optional;
+import java.util.List;
 
 @Repository
 public class SongDataAccessService{
@@ -35,7 +35,7 @@ public class SongDataAccessService{
     public ArrayList<Integer> getAdmin() {
         String sql = """
                 SELECT users.id
-                FROM users 
+                FROM users
                 WHERE users.admin = 'true';
                 """;
         return (ArrayList<Integer>) jdbcTemplate.query(sql, new UserResultSetExtractor());
@@ -55,7 +55,7 @@ public class SongDataAccessService{
                 UPDATE song
                 SET mood = ?, artist = ?, song_name = ?
                 WHERE id = ?
-                  """;
+                """;
         return jdbcTemplate.update(
                 sql,
                 song.getMood(),
@@ -65,4 +65,17 @@ public class SongDataAccessService{
         );
     }
 
+    public List<Song> showAdminSongs(Song song) {
+        String sql= """
+                SELECT mood,song_name,artist FROM songs;
+                """;
+        return jdbcTemplate.query(sql, new SongRowMapper());
+    }
+
+    public List<UserSong> showUserSongs(Song song) {
+        String sql = """
+                SELECT song_name, artist FROM songs;
+                """;
+        return jdbcTemplate.query(sql, new UserSongRowMapper());
+    }
 }

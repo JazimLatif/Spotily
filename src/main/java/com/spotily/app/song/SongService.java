@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -53,6 +54,14 @@ public class SongService {
             songDataAccessService.editSongDetails(id, song);
         } else {
             throw new UnsupportedOperationException("Only Admins are allowed to delete songs");
+        }
+    }
+    public List<? extends Object> showSongs(int adminId, Song song) {
+        ArrayList<Integer> AdminIds = songDataAccessService.getAdmin();
+        if (AdminIds.contains(adminId)) {
+            return songDataAccessService.showAdminSongs(song);
+        } else  {
+            return songDataAccessService.showUserSongs(song);
         }
     }
 }

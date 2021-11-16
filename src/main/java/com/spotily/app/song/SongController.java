@@ -4,6 +4,8 @@ import com.spotily.app.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/song")
 public class SongController {
@@ -13,6 +15,12 @@ public class SongController {
     @Autowired
     public SongController(SongService songService) {
         this.songService = songService;
+    }
+    @GetMapping("/showSongs/{adminId}")
+    public List<Song> showSongs(@PathVariable("adminId") int adminId, Song song){
+        return (List<Song>) songService.showSongs(adminId, song);
+
+
     }
 
     @PostMapping("addSong/{adminId}")

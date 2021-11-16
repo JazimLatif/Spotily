@@ -10,11 +10,12 @@ import java.sql.SQLException;
         @Override
         public Song mapRow(ResultSet rs, int rowNum) throws SQLException {
             Song song= new Song(
-                    rs.getInt("id"),
                     rs.getString("mood"),
                     rs.getString("artist"),
-                    rs.getString("songName"));
+                    rs.getString("song_name"));
 
             return song;
         }
+
+
 }
