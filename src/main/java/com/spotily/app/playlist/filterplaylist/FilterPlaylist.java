@@ -4,11 +4,13 @@ import java.util.Objects;
 
 public class FilterPlaylist {
     private int playlist;
+    private int song_id;
     private String song_name;
     private  String artist;
 
-    public FilterPlaylist(int playlist, String song_name, String artist) {
+    public FilterPlaylist(int playlist, int song_id, String song_name, String artist) {
         this.playlist = playlist;
+        this.song_id = song_id;
         this.song_name = song_name;
         this.artist = artist;
     }
@@ -19,6 +21,14 @@ public class FilterPlaylist {
 
     public void setPlaylist(int playlist) {
         this.playlist = playlist;
+    }
+
+    public int getSong_id() {
+        return song_id;
+    }
+
+    public void setSong_id(int song_id) {
+        this.song_id = song_id;
     }
 
     public String getSong_name() {
@@ -41,19 +51,20 @@ public class FilterPlaylist {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        FilterPlaylist maker = (FilterPlaylist) o;
-        return playlist == maker.playlist && Objects.equals(song_name, maker.song_name) && Objects.equals(artist, maker.artist);
+        FilterPlaylist that = (FilterPlaylist) o;
+        return playlist == that.playlist && song_id == that.song_id && Objects.equals(song_name, that.song_name) && Objects.equals(artist, that.artist);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(playlist, song_name, artist);
+        return Objects.hash(playlist, song_id, song_name, artist);
     }
 
     @Override
     public String toString() {
-        return "Maker{" +
+        return "FilterPlaylist{" +
                 "playlist=" + playlist +
+                ", song_id=" + song_id +
                 ", song_name='" + song_name + '\'' +
                 ", artist='" + artist + '\'' +
                 '}';

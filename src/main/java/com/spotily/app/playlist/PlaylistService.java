@@ -171,13 +171,9 @@ public class PlaylistService {
             while (songid == randomSong || randomSong == 0 || checkAllSongs.contains(randomSong)) {
                 randomSong = new Random().nextInt(songsWithMood.size());
             }
-
-            if (songid != randomSong && randomSong != 0 && !checkAllSongs.contains(randomSong)) {
                 playlistDataAccessService.addToPlaylist(playlistid, randomSong);
                 playlistDataAccessService.removeSongFromPlaylist(playlistid, songid);
-            } else {
-                throw new ResourceNotFound("Please try again");
-            }
+
 
         }
 
