@@ -19,7 +19,11 @@ public class SongService {
     public void addNewSong(int adminId, Song song) {
         ArrayList<Integer> AdminIds = songDataAccessService.getAdmin();
         if (AdminIds.contains(adminId)) {
-            songDataAccessService.addNewSong(song);
+            if (song.getTheme().isEmpty()){
+            songDataAccessService.addNewSong(song);}
+            else{
+                songDataAccessService.addThemedSong(song);
+            }
         } else {
             throw new UnsupportedOperationException("Only Admins are allowed to add songs");
         }

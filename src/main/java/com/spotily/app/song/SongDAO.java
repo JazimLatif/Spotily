@@ -14,5 +14,6 @@ public interface SongDAO {
     int editSongDetails(int id, Song song);
     List<Song> showAdminSongs(Song song);
     List<UserSong> showUserSongs(Song song);
+    int addThemedSong(Song song);
 
 }
