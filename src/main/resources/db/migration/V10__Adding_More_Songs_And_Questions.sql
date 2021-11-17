@@ -51,32 +51,3 @@ INSERT INTO options (question_id, option_text, option_mood) VALUES (13, 'Python'
 INSERT INTO options (question_id, option_text, option_mood) VALUES (13, 'JavaScript', 'happy');
 INSERT INTO options (question_id, option_text, option_mood) VALUES (13, 'PHP', 'sad');
 
-INSERT INTO questions (question_text) VALUES ('Which web browser do you prefer?');
-INSERT INTO options (question_id, option_text, option_mood) VALUES (14, 'Internet Explorer', 'angry');
-INSERT INTO options (question_id, option_text, option_mood) VALUES (14, 'Safari', 'sad');
-INSERT INTO options (question_id, option_text, option_mood) VALUES (14, 'Firefox', 'relaxed');
-INSERT INTO options (question_id, option_text, option_mood) VALUES (14, 'Chrome', 'happy');
-
-INSERT INTO questions (question_text) VALUES ('What is your favourite sweet food?');
-INSERT INTO options (question_id, option_text, option_mood) VALUES (15, 'Popping candy', 'angry');
-INSERT INTO options (question_id, option_text, option_mood) VALUES (15, 'Not a fan of any', 'sad');
-INSERT INTO options (question_id, option_text, option_mood) VALUES (15, 'Ice cream', 'happy');
-INSERT INTO options (question_id, option_text, option_mood) VALUES (15, 'Hot chocolate', 'relaxed');
-
-INSERT INTO questions (question_text) VALUES ('What is your favourite video game or game franchise?');
-INSERT INTO options (question_id, option_text, option_mood) VALUES (16, 'Ratchet & Clank', 'happy');
-INSERT INTO options (question_id, option_text, option_mood) VALUES (16, 'Stardew Valley', 'relaxed');
-INSERT INTO options (question_id, option_text, option_mood) VALUES (16, 'Grand Theft Auto', 'angry');
-INSERT INTO options (question_id, option_text, option_mood) VALUES (16, 'The Last Of Us', 'sad');
-
-INSERT INTO questions (question_text) VALUES ('Which is the best Netflix show?');
-INSERT INTO options (question_id, option_text, option_mood) VALUES (17, 'Tiger King', 'happy');
-INSERT INTO options (question_id, option_text, option_mood) VALUES (17, 'Stranger Things', 'angry');
-INSERT INTO options (question_id, option_text, option_mood) VALUES (17, '13 Reasons Why', 'sad');
-INSERT INTO options (question_id, option_text, option_mood) VALUES (17, 'Our Planet', 'relaxed');
-
-INSERT INTO questions (question_text) VALUES ('Which plant would you prefer to have?');
-INSERT INTO options (question_id, option_text, option_mood) VALUES (18, 'Weeping Willow', 'sad');
-INSERT INTO options (question_id, option_text, option_mood) VALUES (18, 'Bonsai', 'relaxed');
-INSERT INTO options (question_id, option_text, option_mood) VALUES (18, 'Sunflower', 'happy');
-INSERT INTO options (question_id, option_text, option_mood) VALUES (18, 'Venus Fly Trap', 'angry');
