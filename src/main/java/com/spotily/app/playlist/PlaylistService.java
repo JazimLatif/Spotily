@@ -44,6 +44,7 @@ public class PlaylistService {
 
     public void makePlaylist(ArrayList<String> answers, int userId) {
         ArrayList<Integer> playlist = new ArrayList<Integer>();
+        answers.addAll(answers);
 //        iterates through each quiz answer and does the business logic
         for (String ans : answers) {
 //            calls get
