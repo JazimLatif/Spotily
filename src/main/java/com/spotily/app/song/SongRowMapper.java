@@ -12,8 +12,8 @@ public class SongRowMapper implements RowMapper<Song> {
         public Song mapRow(ResultSet rs, int rowNum) throws SQLException {
             Song song= new Song(
                     rs.getString("mood"),
-                    rs.getString("artist"),
                     rs.getString("song_name"),
+                    rs.getString("artist"),
                     Optional.of(rs.getInt("song_theme")));
 
             return song;
