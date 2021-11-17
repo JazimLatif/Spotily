@@ -12,7 +12,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Repository
-public class PlaylistDataAccessService {
+public class PlaylistDataAccessService implements PlaylistDAO{
 
     private JdbcTemplate jdbcTemplate;
 
@@ -84,6 +84,7 @@ public class PlaylistDataAccessService {
                 """;
         return (ArrayList<Integer>) jdbcTemplate.query(sql, new PlaylistResultSetExtractor(), answer, theme);
     }
+
 
     public int deletePlaylist(int id){
         String sql = """

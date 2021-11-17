@@ -46,11 +46,9 @@ public class PlaylistService {
         playlistDataAccessService.makeNewPlaylist(userId);
         int newPlaylistId = playlistDataAccessService.getNewestPlaylistId();
 
-        for (int i = 0; i < playlist.size(); i++) {
-            System.out.println(Integer.toString(playlist.get(i)) + " " + Integer.toString(newPlaylistId));
+        for (int i = 0; i<playlist.size(); i++){
             playlistDataAccessService.addToPlaylist(newPlaylistId, playlist.get(i));
         }
-
 
     }
 
@@ -65,8 +63,7 @@ public class PlaylistService {
         }
         playlistDataAccessService.makeNewPlaylist(userId);
         int newPlaylistId = playlistDataAccessService.getNewestPlaylistId();
-        for (int i = 0; i < playlist.size(); i++) {
-            System.out.println(Integer.toString(playlist.get(i)) + " " + Integer.toString(newPlaylistId));
+        for (int i = 0; i<playlist.size(); i++){
             playlistDataAccessService.addToPlaylist(newPlaylistId, playlist.get(i));
         }
 
@@ -98,8 +95,9 @@ public class PlaylistService {
 
     public List<FilterPlaylist> selectPlaylistById(int id) {
         List<FilterPlaylist> playlistOptional = playlistDataAccessService.selectPlaylistbyId(id);
-        if (playlistOptional.isEmpty()) {
-            throw new ResourceNotFound("Playlist " + id + "does not exist");
+        if(playlistOptional.isEmpty()){
+            throw new ResourceNotFound("Playlist " + id + " does not exist");
+
         }
         return playlistDataAccessService.selectPlaylistbyId(id);
 
@@ -107,8 +105,9 @@ public class PlaylistService {
 
     public void deletePlaylist(int id) {
         List<FilterPlaylist> playlistOptional = playlistDataAccessService.selectPlaylistbyId(id);
-        if (playlistOptional.isEmpty()) {
-            throw new ResourceNotFound("Playlist " + id + "does not exist");
+
+        if(playlistOptional.isEmpty()){
+            throw new ResourceNotFound("Playlist " + id + " does not exist");
         }
         playlistDataAccessService.deletePlaylist(id);
     }

@@ -1,18 +1,29 @@
 package com.spotily.app.song;
 
 import java.util.Objects;
+import java.util.Optional;
 
 public class Song {
     private int id;
     private String mood;
     private String songName;
     private String artist;
+    private Optional<Integer> theme;
 
 
-    public Song( String mood, String songName, String artist) {
+    public Song( String mood, String songName, String artist, Optional<Integer> theme) {
         this.mood = mood;
         this.songName = songName;
         this.artist = artist;
+        this.theme = theme;
+    }
+
+    public Optional<Integer> getTheme() {
+        return theme;
+    }
+
+    public void setTheme(Optional<Integer> theme) {
+        this.theme = theme;
     }
 
     public String getMood() {

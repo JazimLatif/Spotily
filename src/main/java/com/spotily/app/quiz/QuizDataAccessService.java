@@ -1,14 +1,12 @@
 package com.spotily.app.quiz;
 
-import org.springframework.data.relational.core.mapping.Table;
-import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
 
 @Repository
-public class QuizDataAccessService {
+public class QuizDataAccessService implements QuizDAO{
 
     private JdbcTemplate jdbcTemplate;
 
@@ -32,28 +30,28 @@ public class QuizDataAccessService {
          return options;
      }
 
-     public String getRandomQuestion(){
+     public Optional<String> getRandomQuestion(){
         String sql = """
                 SELECT question_text FROM questions ORDER BY RANDOM () LIMIT 1;
                 """;
         String question = (String) jdbcTemplate.queryForObject(sql, new Object[] {}, String.class);
-        return question;
+        return Optional.ofNullable(question);
      }
 
-    public String getThemedQuestion(int theme){
+    public Optional<String> getThemedQuestion(int theme){
         String sql = """
                 SELECT question_text FROM questions WHERE question_theme = ? ORDER BY RANDOM () LIMIT 1;
                 """;
         String question = (String) jdbcTemplate.queryForObject(sql, new Object[] {theme}, String.class);
-        return question;
+        return Optional.ofNullable(question);
     }
 
-     public int getNewQuestionId(){
+     public Optional<Integer> getNewQuestionId(){
          String sql = """
                 SELECT questions.id FROM questions ORDER BY questions.id DESC LIMIT 1;
                 """;
          int questionId = (int) jdbcTemplate.queryForObject(sql, new Object[] {}, Integer.class);
-         return questionId;
+         return Optional.ofNullable(questionId);
      }
 
      public int addQuestion(String question){
@@ -115,6 +113,13 @@ public class QuizDataAccessService {
         return jdbcTemplate.update(sql, id);
     }
 
+    public int deleteQuestionById(int questionId){
+        String sql = """
+                DELETE FROM questions WHERE id = ?;
+                """;
+        Object[] id = new Object[]{questionId};
+        return jdbcTemplate.update(sql, id);
+    }
 
 
 }

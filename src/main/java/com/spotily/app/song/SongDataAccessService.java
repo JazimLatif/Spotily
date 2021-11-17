@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class SongDataAccessService{
+public class SongDataAccessService implements SongDAO{
 
     private JdbcTemplate jdbcTemplate;
 
@@ -32,6 +32,21 @@ public class SongDataAccessService{
         );
     }
 
+    public int addThemedSong(Song song) {
+        // admin use
+        String sql = """
+              INSERT INTO songs(mood, artist, song_name, song_theme)
+              VALUES(?, ?, ?, ?);
+                """;
+        return jdbcTemplate.update(
+                sql,
+                song.getMood(),
+                song.getArtist(),
+                song.getSongName(),
+                song.getTheme().get()
+        );
+    }
+
     public ArrayList<Integer> getAdmin() {
         String sql = """
                 SELECT users.id
@@ -44,7 +59,7 @@ public class SongDataAccessService{
     public int deleteSong(int id) {
         // can add name for deletion in future
         String sql = """
-              DELETE FROM song
+              DELETE FROM songs
               WHERE id = ?
                 """;
         return jdbcTemplate.update(sql, id);
@@ -67,7 +82,7 @@ public class SongDataAccessService{
 
     public List<Song> showAdminSongs(Song song) {
         String sql= """
-                SELECT mood,song_name,artist FROM songs;
+                SELECT mood,song_name,artist,song_theme FROM songs;
                 """;
         return jdbcTemplate.query(sql, new SongRowMapper());
     }
