@@ -21,16 +21,6 @@ public class QuizController {
         this.quizService = quizService;
     }
 
-//    @PostMapping
-//    public void submitQuiz(@RequestBody Quiz quiz){
-////        do we need to do more here to create a quiz object?
-//        quizService.submitQuiz(quiz);
-//    }
-
-//    @GetMapping("{id}")
-//    public Quiz getQuiz(@PathVariable("id") int id){
-//        return quizService.getQuizQuestions(id);
-//    }
 
 //    get text of a random q - successfully tested
     @GetMapping("/randomq")
@@ -45,19 +35,12 @@ public class QuizController {
         return quizService.getQOptions(testQ);
     }
 
-//    gets question - works, but shows the oddness of current quiz obj, may rejig
+//    gets question - works, but shows the oddness of current quiz obj, now fixed
     @GetMapping("/fullquestiontest")
     public HashMap getFullQuestionsRandomTest(){
         return quizService.makeRandomQuestionOptionsMap();
     }
 
-//    tested in thunder client - working but with an issue, hardcoded a number of questions
-//    which it is sometimes over and undershooting
-//    could cause issues when checking for null answers - but could maybe just add the answer optionals in the same loop lol
-    @GetMapping("/fullquiztest")
-    public Quiz getFullQuizTest(){
-        return quizService.makeEmptyQuiz();
-    }
 
 //tested in thunder client - working, creates new playlist with songs w correct tags
     @PostMapping("/submitTest")
@@ -80,27 +63,34 @@ public class QuizController {
 
 
 // tested in thunder client successfully
-    @PostMapping("/submitthemed/{tag}")
-    public void submitThemedQuizTest(@RequestBody Quiz quiz, @PathVariable("tag") int tag){ quizService.submitThemedQuiz(quiz, tag); }
+    @PostMapping("/submit-themed/{tag}")
+    public void submitThemedQuiz(@RequestBody Quiz quiz, @PathVariable("tag") int tag){ quizService.submitThemedQuiz(quiz, tag); }
 
-//    tested in thuder client - working
-    @GetMapping("/getthemed/{tag}")
-    public Quiz getThemedQuizTest(@PathVariable("tag") int tag){ return quizService.makeThemedQuiz(tag); }
+//    tested in thunder client - working
+    @GetMapping("/get-themed/{tag}")
+    public Quiz getThemedQuiz(@PathVariable("tag") int tag){ return quizService.makeThemedQuiz(tag); }
 
 // tested in thunderclient - working
-    @PostMapping("/submitthemedreturnplaylist/{tag}")
-    public List<FilterPlaylist> submitThemedQuizReturnPlaylistTest(@RequestBody Quiz quiz, @PathVariable("tag") int tag){
+    @PostMapping("/submit-themed-return/{tag}")
+    public List<FilterPlaylist> submitThemedQuizReturnPlaylist(@RequestBody Quiz quiz, @PathVariable("tag") int tag){
         quizService.submitThemedQuiz(quiz, tag);
         return quizService.returnLatestPlaylist();
     }
 
 //    tested in thunderclient - working
-    @PostMapping("/submitReturnPlaylistTest")
-    public List<FilterPlaylist> submitQuizReturnPlaylistTest(@RequestBody Quiz quiz){
+    @PostMapping("/submit-return")
+    public List<FilterPlaylist> submitQuizReturnPlaylist(@RequestBody Quiz quiz){
         quizService.submitQuiz(quiz);
         return quizService.returnLatestPlaylist();
     }
 
+    //    tested in thunder client - working but with an issue - now fixed
+    @GetMapping("/getquiz")
+    public Quiz getFullQuiz(){
+        return quizService.makeEmptyQuiz();
+    }
+
+//    tested in thunder client - working
     @DeleteMapping("/delete/{userId}/{questionId}")
     public void deleteQuestionById(@PathVariable("userId") int userId, @PathVariable("questionId") int questionId){
         quizService.deleteQuestion(userId, questionId);
