@@ -15,7 +15,8 @@ We also added several extensions:
 
 ## How to Set Up and Use
 
-To install the application, clone the repository and run the project or the DemoApplication class in your IDE. The project must be connected to a local database, and the name of this database should be given in the application.properties file, alongside any username and password for it. This should be a new, empty database. The database will be populated with some starter data upon running, as some table entries are provided in the db/migration folder of the repository.   
+To install the application, clone the repository and run the project or the DemoApplication class in your IDE. The project must be connected to a local database, and the name of this database should be given in the application.properties file, alongside any username and password for it. This should be a new, empty database.  
+The database will be populated with some starter data upon running, as some table entries are provided in the db/migration folder of the repository.   
 
 
 ## Credits
