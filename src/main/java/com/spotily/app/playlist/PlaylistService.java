@@ -29,6 +29,19 @@ public class PlaylistService {
         this.songDataAccessService = songDataAccessService;
     }
 
+    public void makeNewPlaylist(int userId){
+        playlistDataAccessService.makeNewPlaylist(userId);
+    }
+
+    public int getNewestPlaylistId(){
+        return playlistDataAccessService.getNewestPlaylistId();
+    }
+
+    public void addToPlaylist(int userId, int songId){
+        playlistDataAccessService.addToPlaylist(userId, songId);
+    }
+
+
     public void makePlaylist(ArrayList<String> answers, int userId) {
         ArrayList<Integer> playlist = new ArrayList<Integer>();
 //        iterates through each quiz answer and does the business logic
@@ -43,11 +56,11 @@ public class PlaylistService {
                 playlist.add(randomSong);
             }
         }
-        playlistDataAccessService.makeNewPlaylist(userId);
-        int newPlaylistId = playlistDataAccessService.getNewestPlaylistId();
+        makeNewPlaylist(userId);
+        int newPlaylistId = getNewestPlaylistId();
 
         for (int i = 0; i<playlist.size(); i++){
-            playlistDataAccessService.addToPlaylist(newPlaylistId, playlist.get(i));
+            addToPlaylist(newPlaylistId, playlist.get(i));
         }
 
     }
@@ -61,10 +74,10 @@ public class PlaylistService {
                 playlist.add(randomSong);
             }
         }
-        playlistDataAccessService.makeNewPlaylist(userId);
-        int newPlaylistId = playlistDataAccessService.getNewestPlaylistId();
+        makeNewPlaylist(userId);
+        int newPlaylistId = getNewestPlaylistId();
         for (int i = 0; i<playlist.size(); i++){
-            playlistDataAccessService.addToPlaylist(newPlaylistId, playlist.get(i));
+            addToPlaylist(newPlaylistId, playlist.get(i));
         }
 
     }
