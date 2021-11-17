@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Repository
-public class PlaylistDataAccessService {
+public class PlaylistDataAccessService implements PlaylistDAO{
 
     private JdbcTemplate jdbcTemplate;
 

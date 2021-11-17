@@ -1,14 +1,12 @@
 package com.spotily.app.quiz;
 
-import org.springframework.data.relational.core.mapping.Table;
-import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
 
 @Repository
-public class QuizDataAccessService {
+public class QuizDataAccessService implements QuizDAO{
 
     private JdbcTemplate jdbcTemplate;
 
@@ -74,13 +72,13 @@ public class QuizDataAccessService {
         return jdbcTemplate.update(sql, question, theme);
     }
 
-    public Optional<ArrayList<Integer>> getAdmin() {
+    public ArrayList<Integer> getAdmin() {
         String sql = """
                 SELECT users.id
                 FROM users 
                 WHERE users.admin = 'true';
                 """;
-        return (Optional<ArrayList<Integer>>) jdbcTemplate.query(sql, new QuizResultSetExtractor());
+        return (ArrayList<Integer>) jdbcTemplate.query(sql, new QuizResultSetExtractor());
     }
 
     public int addOption(int questionId, String option, String mood){
@@ -92,11 +90,11 @@ public class QuizDataAccessService {
         return jdbcTemplate.update(sql, questionId, option, mood);
     }
 
-    public Optional<ArrayList<Integer>> getAllQuestionIds(){
+    public ArrayList<Integer> getAllQuestionIds(){
         String sql = """
                 SELECT id FROM questions;
                 """;
-        return (Optional<ArrayList<Integer>>) jdbcTemplate.query(sql, new QuizResultSetExtractor());
+        return (ArrayList<Integer>) jdbcTemplate.query(sql, new QuizResultSetExtractor());
     }
 
     public int updateQuestion(String questionText, int questionId){
@@ -115,6 +113,13 @@ public class QuizDataAccessService {
         return jdbcTemplate.update(sql, id);
     }
 
+    public int deleteQuestionById(int questionId){
+        String sql = """
+                DELETE FROM questions WHERE id = ?;
+                """;
+        Object[] id = new Object[]{questionId};
+        return jdbcTemplate.update(sql, id);
+    }
 
 
 }

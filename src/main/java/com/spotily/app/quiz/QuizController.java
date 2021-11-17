@@ -100,4 +100,10 @@ public class QuizController {
         quizService.submitQuiz(quiz);
         return quizService.returnLatestPlaylist();
     }
+
+    @DeleteMapping("/delete/{userId}/{questionId}")
+    public void deleteQuestionById(@PathVariable("userId") int userId, @PathVariable("questionId") int questionId){
+        quizService.deleteQuestion(userId, questionId);
+    }
+
 }

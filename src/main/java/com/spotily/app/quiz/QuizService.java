@@ -134,11 +134,8 @@ public class QuizService {
     }
 
     public void addQuestion(Question questionObj, int id){
-        Optional<ArrayList<Integer>> adminIds = quizDataAccessService.getAdmin();
-        if (adminIds.isEmpty()){
-            throw new ResourceNotFound("No admin users available, unable to submit");
-        }
-        else if (!adminIds.get().contains(id)){
+        ArrayList<Integer> adminIds = quizDataAccessService.getAdmin();
+        if (!adminIds.contains(id)){
             throw new UnsupportedOperationException("Only Admins are allowed to add questions");
         }
         String question = questionObj.getText();
@@ -163,19 +160,16 @@ public class QuizService {
 
     public void updateQuestion(Question question, int userId, int questionId){
 //        check user is admin
-        Optional<ArrayList<Integer>> adminIds = quizDataAccessService.getAdmin();
-        if (adminIds.isEmpty()){
-            throw new ResourceNotFound("No admin users available, unable to submit");
-        }
-        else if (!adminIds.get().contains(userId)){
+        ArrayList<Integer> adminIds = quizDataAccessService.getAdmin();
+        if (!adminIds.contains(userId)){
             throw new UnsupportedOperationException("Only Admins are allowed to update questions");
         }
 //      check question exists
-        Optional<ArrayList<Integer>> questionIds = quizDataAccessService.getAllQuestionIds();
-        if (questionIds.isEmpty()){
+        ArrayList<Integer> questionIds = quizDataAccessService.getAllQuestionIds();
+        if (questionIds.size()==0){
             throw new ResourceNotFound("No questions found");
         }
-        else if (!questionIds.get().contains(questionId)){
+        else if (!questionIds.contains(questionId)){
             throw new ResourceNotFound("Question with that ID not found");
         }
 
@@ -194,6 +188,25 @@ public class QuizService {
 
     public List<FilterPlaylist> returnLatestPlaylist(){
         return playlistService.selectPlaylistById(playlistService.getMaxPlaylistIdTest());
+    }
+
+    public void deleteQuestion(int userId, int questionId){
+        ArrayList<Integer> adminIds = quizDataAccessService.getAdmin();
+         if (!adminIds.contains(userId)){
+            throw new UnsupportedOperationException("Only Admins are allowed to delete questions");
+        }
+//      check question exists
+        ArrayList<Integer> questionIds = quizDataAccessService.getAllQuestionIds();
+        if (questionIds.size()==0){
+            throw new ResourceNotFound("No questions found");
+        }
+        else if (!questionIds.contains(questionId)){
+            throw new ResourceNotFound("Question with that ID not found");
+        }
+//        delete the options
+        quizDataAccessService.deleteOptionsByQuestionId(questionId);
+//        delete the question
+        quizDataAccessService.deleteQuestionById(questionId);
     }
 
 }

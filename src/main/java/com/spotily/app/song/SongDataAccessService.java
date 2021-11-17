@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class SongDataAccessService{
+public class SongDataAccessService implements SongDAO{
 
     private JdbcTemplate jdbcTemplate;
 
@@ -44,7 +44,7 @@ public class SongDataAccessService{
     public int deleteSong(int id) {
         // can add name for deletion in future
         String sql = """
-              DELETE FROM song
+              DELETE FROM songs
               WHERE id = ?
                 """;
         return jdbcTemplate.update(sql, id);
