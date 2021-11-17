@@ -9,7 +9,7 @@ Our minimum viable product was a service where users could submit a quiz and hav
 
 ### Extensions 
 We also added several extensions:  
-* An admin property for users, where only admins could perform certain actions such as adding new songs and questions data to the database  
+* An admin property for users, where only admins could perform certain actions such as adding new songs and questions to the database  
 * A theme property for questions and songs, so users could choose to answer a quiz or get songs based around a certain topic  
 * A switch song option, where a user could change playlist songs they disliked, for new ones that still matched the quiz answers they gave
 
