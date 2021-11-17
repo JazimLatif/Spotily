@@ -167,14 +167,13 @@ public class PlaylistService {
             String mood = songDataAccessService.getSongMood(songid).toString().replace("[", "")
                     .replace("]", "");
             ArrayList<Integer> songsWithMood = getByMood(mood);
-            int randomSong = new Random().nextInt(songsWithMood.size());
+            int randomNumber = new Random().nextInt(songsWithMood.size());
+            int randomSong = songsWithMood.get(randomNumber);
             while (songid == randomSong || randomSong == 0 || checkAllSongs.contains(randomSong)) {
                 randomSong = new Random().nextInt(songsWithMood.size());
             }
                 playlistDataAccessService.addToPlaylist(playlistid, randomSong);
                 playlistDataAccessService.removeSongFromPlaylist(playlistid, songid);
-
-
         }
 
     }
