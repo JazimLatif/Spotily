@@ -172,7 +172,8 @@ public class PlaylistService {
             int randomNumber = new Random().nextInt(songsWithMood.size());
             int randomSong = songsWithMood.get(randomNumber);
             while (songid == randomSong || randomSong == 0 || checkAllSongs.contains(randomSong)) {
-                randomSong = new Random().nextInt(songsWithMood.size());
+                randomNumber = new Random().nextInt(songsWithMood.size());
+                randomSong = songsWithMood.get(randomNumber);
             }
                 playlistDataAccessService.addToPlaylist(playlistid, randomSong);
                 playlistDataAccessService.removeSongFromPlaylist(playlistid, songid);
