@@ -22,6 +22,7 @@ The database will be populated with some starter data upon running, as some tabl
 ## Credits
 
 This project was created as part of the Bright Network Technology Academy full-stack bootcamp.  
+
 Contributors:  
 Jazim (@JazimLatif)  
 Nagina (@nagiinaaa)  
