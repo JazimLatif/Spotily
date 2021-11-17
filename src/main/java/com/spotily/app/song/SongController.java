@@ -36,4 +36,9 @@ public class SongController {
         songService.editSongDetails(adminId, id, song);
     }
 
+    @GetMapping("/mood/{id}")
+    public Object getSongMood(@PathVariable("id") int id){
+        return songService.getSongMood(id);
+    }
+
 }

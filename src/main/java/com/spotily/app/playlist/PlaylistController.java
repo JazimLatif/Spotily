@@ -60,4 +60,23 @@ public class PlaylistController {
         ArrayList<String> answersArrayList = new ArrayList<>( List.of(answer1, answer2, answer3) );
         playlistService.makePlaylist(answersArrayList, userId);
     }
+
+    @GetMapping("/playlist/user/{id}")
+    public Playlist checkIfUserHasPlaylist (@PathVariable("id") int id){
+        return playlistService.checkIfUserHasPlaylist(id);
+    }
+
+    @GetMapping("playlist/{id}/{songid}")
+    public ArrayList<Integer> checkIfSongIsInPlaylist(@PathVariable("id") int id, @PathVariable("songid") int songid) {
+        return playlistService.checkIfSongIsInPlaylist(id, songid);
+    }
+
+    @GetMapping("playlist/{id}/songs")
+    public ArrayList<Integer> checkAllSongInPlaylist(@PathVariable("id") int id) {
+        return playlistService.checkAllSongInPlaylist(id);
+    }
+    @PostMapping("/playlist/{playlistid}/{songid}")
+    public void replaceSong(@PathVariable("playlistid") int id,@PathVariable("songid") int songid){
+        playlistService.replaceSongInPlaylist(id, songid);
+    }
 }
