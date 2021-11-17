@@ -4,7 +4,7 @@ INSERT INTO options (question_id, option_text, option_mood) VALUES (1, 'the beac
 INSERT INTO options (question_id, option_text, option_mood) VALUES (1, 'in bed', 'sad');
 INSERT INTO options (question_id, option_text, option_mood) VALUES (1, 'a boxing ring', 'angry');
 
-INSERT INTO questions(question_text) VALUES ('pick a pet?');
+INSERT INTO questions(question_text) VALUES ('pick a pet');
 INSERT INTO options (question_id, option_text, option_mood) VALUES (2, 'dog', 'happy');
 INSERT INTO options (question_id, option_text, option_mood) VALUES (2, 'cat', 'relaxed');
 INSERT INTO options (question_id, option_text, option_mood) VALUES (2, 'fish', 'sad');
