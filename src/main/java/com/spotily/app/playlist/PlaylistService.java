@@ -68,6 +68,7 @@ public class PlaylistService {
 
     public void makeThemedPlaylist(ArrayList<String> answers, int userId, int theme) {
         ArrayList<Integer> playlist = new ArrayList<Integer>();
+        answers.addAll(answers);
         for (String ans : answers) {
             ArrayList<Integer> songsWithMood = getByMoodAndTheme(ans, theme);
             int randomSong = songsWithMood.get(new Random().nextInt(songsWithMood.size()));
