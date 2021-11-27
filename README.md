@@ -15,7 +15,7 @@ We also added several extensions:
 
 ## How to Set Up and Use
 
-To install the application, clone the repository and run the project or the DemoApplication class in your IDE. The project must be connected to a local database, and the name of this database should be given in the application.properties file, alongside any username and password for it. This should be a new, empty database.  
+To install the application, clone the repository and run the project or the DemoApplication class in your IDE. The project must be connected to a local database, and the name of this database should be given in the application.properties file, alongside any username and password for it. This should be a new, empty database. The application properties file currently has the database name as 'testspotily', so it may be easiest to set up a database with the same name. 
 The database will be populated with some starter data upon running, as some table entries are provided in the db/migration folder of the repository.   
 
 ## API Endpoints  
@@ -39,6 +39,83 @@ The database will be populated with some starter data upon running, as some tabl
 * POST /addSong/{adminId} – adds a new song, given a valid admin user id
 * DELETE /delete/{adminId}/{songId} – deletes the selected song, given a valid admin user id
 * PUT /update/{adminId}/{songId} – updates the selected song, given a valid admin user id
+
+## JSON Object Examples
+
+For sending information in the request body to the database, the following JSON structures can be used.
+
+User:
+```
+{
+  "username" : "musicliker666",
+  "email" : "musicliker@email.com",
+  "admin" : false
+}
+```
+
+Quiz:
+```
+{
+  "userId": 1,
+  "questionsAndOptions": {
+    "What is the best season?": [
+      "Autumn",
+      "Winter",
+      "Spring",
+      "Summer"
+    ],
+    "are you a ___ type of person": [
+      "early riser",
+      "sleep until noon",
+      "in bed all day",
+      "unwillingly dragged out of bed"
+    ],
+    "which one would you rather be doing right now?": [
+      "dancing",
+      "reading",
+      "crying",
+      "fighting someone"
+    ],
+    "Which of these is your favourite mode of transport?": [
+      "Bicycle",
+      "Bus",
+      "Motorbike",
+      "Walking"
+    ]
+  },
+  "answers": [
+    "Autumn",
+    "early riser",
+    "crying",
+    "Walking"
+  ]
+}
+```
+
+Question:
+```
+{
+  "text": "What is your favourite Christmas activity?",  
+  "optionsAndMoods" : {
+    "Family games": "happy",
+      "Snowball fight": "angry",
+      "Thinking about how fast the year went": "sad",
+      "Falling asleep on the sofa": "relaxed"
+  },
+  "theme": null
+}
+```
+
+Song:
+```
+{
+  "mood" : "happy",
+  "songName" : "The Happy Song",
+  "artist" : "The Happy Musician",
+  "theme" : null
+}
+```
+
 
 ## Credits
 
