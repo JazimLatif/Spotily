@@ -52,6 +52,8 @@ public class PlaylistDataAccessService implements PlaylistDAO{
                 FROM songs                                                                      
                 INNER JOIN playlist_maker                                                       
                 ON songs.id = playlist_maker.song_id
+                INNER JOIN playlist
+                ON playlist_maker.playlist_id = playlist.playlist_user
                 ORDER BY playlist_id
                  
                 """;

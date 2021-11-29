@@ -4,12 +4,14 @@ import java.util.Objects;
 
 public class FilterPlaylist {
     private int playlist;
+    private int userid;
     private int song_id;
     private String song_name;
     private  String artist;
 
-    public FilterPlaylist(int playlist, int song_id, String song_name, String artist) {
+    public FilterPlaylist(int playlist, int userid, int song_id, String song_name, String artist) {
         this.playlist = playlist;
+        this.userid = userid;
         this.song_id = song_id;
         this.song_name = song_name;
         this.artist = artist;
@@ -21,6 +23,14 @@ public class FilterPlaylist {
 
     public void setPlaylist(int playlist) {
         this.playlist = playlist;
+    }
+
+    public int getUserid() {
+        return userid;
+    }
+
+    public void setUserid(int userid) {
+        this.userid = userid;
     }
 
     public int getSong_id() {
@@ -52,18 +62,19 @@ public class FilterPlaylist {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         FilterPlaylist that = (FilterPlaylist) o;
-        return playlist == that.playlist && song_id == that.song_id && Objects.equals(song_name, that.song_name) && Objects.equals(artist, that.artist);
+        return playlist == that.playlist && userid == that.userid && song_id == that.song_id && Objects.equals(song_name, that.song_name) && Objects.equals(artist, that.artist);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(playlist, song_id, song_name, artist);
+        return Objects.hash(playlist, userid, song_id, song_name, artist);
     }
 
     @Override
     public String toString() {
         return "FilterPlaylist{" +
                 "playlist=" + playlist +
+                ", userid=" + userid +
                 ", song_id=" + song_id +
                 ", song_name='" + song_name + '\'' +
                 ", artist='" + artist + '\'' +

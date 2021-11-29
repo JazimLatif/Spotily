@@ -12,6 +12,7 @@ public class FilterPlaylistRowMapper implements RowMapper<FilterPlaylist> {
     public FilterPlaylist mapRow(ResultSet rs, int rowNum) throws SQLException {
         FilterPlaylist filterPlaylist = new FilterPlaylist(
                 rs.getInt("playlist_id"),
+                rs.getInt("playlist_user"),
                 rs.getInt("song_id"),
                 rs.getString("song_name"),
                 rs.getString("artist"));
