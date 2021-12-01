@@ -1,7 +1,10 @@
 package com.spotily.app.user;
 
+import com.spotily.app.user.userWithID.UserWithID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(path="/api/user")
@@ -33,5 +36,12 @@ public class UserController {
     public void editUserAccountDetails(@PathVariable("id") int id, @RequestBody User user) {
         userService.editUserAccountDetails(id, user);
     }
+
+    @GetMapping("/allUsers")
+    public List<UserWithID> getAllUsers() {
+        return userService.getAllUsers();
+    }
+
+
 
 }

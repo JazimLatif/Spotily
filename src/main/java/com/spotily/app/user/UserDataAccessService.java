@@ -7,6 +7,7 @@ import com.spotily.app.user.userWithID.UserWithID;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -76,7 +77,18 @@ public class UserDataAccessService implements UserDAO {
                 .findFirst();
     }
 
-//    public List<Song> getUserPlaylist(int id) {
+
+    public List<UserWithID> getAllUsers() {
+        String sql = """
+                SELECT * 
+                FROM users
+                """;
+
+        List<UserWithID> userList = jdbcTemplate.query(sql, new UserRowMapper());
+        return userList;
+    }
+
+    //    public List<Song> getUserPlaylist(int id) {
 //
 //    String sql= """
 //                SELECT * FROM playlist

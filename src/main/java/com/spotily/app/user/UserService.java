@@ -1,9 +1,11 @@
 package com.spotily.app.user;
 
 import com.spotily.app.exception.ResourceNotFound;
+import com.spotily.app.user.userWithID.UserWithID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -39,5 +41,11 @@ public class UserService {
     }
 
 
-
+    public List<UserWithID> getAllUsers() {
+        List<UserWithID> userOptional = userDAO.getAllUsers();
+        if(userOptional.isEmpty()) {
+            throw new ResourceNotFound("No users found");
+        }
+        return userOptional;
+    }
 }
