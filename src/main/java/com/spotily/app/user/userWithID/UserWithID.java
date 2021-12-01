@@ -4,14 +4,20 @@ import java.util.Objects;
 
 public class UserWithID {
 
+    private final boolean admin;
     private int id;
     private String username;
     private String email;
 
-    public UserWithID(int id, String username, String email) {
+    public UserWithID(int id, String username, String email, boolean admin) {
         this.id = id;
         this.username = username;
         this.email = email;
+        this.admin = admin;
+    }
+
+    public boolean isAdmin() {
+        return admin;
     }
 
     public int getId() {

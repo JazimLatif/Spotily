@@ -12,7 +12,8 @@ public class UserRowMapper implements RowMapper<UserWithID> {
         UserWithID user = new UserWithID(
                 rs.getInt("id"),
                 rs.getString("username"),
-                rs.getString("email"));
+                rs.getString("email"),
+                rs.getBoolean("admin"));
 
         return user;
     }
